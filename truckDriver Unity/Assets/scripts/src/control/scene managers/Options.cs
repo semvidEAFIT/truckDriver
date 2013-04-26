@@ -1,5 +1,6 @@
 using Boomlagoon.JSON;
 using UnityEngine;
+using System;
 
 public class Options : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Options : MonoBehaviour
 
     private void Awake()
     {
-        current = new string[4, 5];
+        current = new string[difficulties.Length, data.Length];
         if (!PlayerPrefs.HasKey("difficultySettings"))
         {
             createNonExistentSettings();
@@ -103,17 +104,24 @@ public class Options : MonoBehaviour
         //Boton para guardar
         if(GUI.Button(new Rect(Screen.width/8, 5*Screen.height/6, 3*Screen.width/4, Screen.height/16), "Save")){
             difficultySettings = new JSONObject();
-            for (int i = 0; i < difficulties.Length; i++)
+            try
             {
-                JSONObject difficulty = new JSONObject();
-                difficulty.Add(nodeCount, new JSONValue(int.Parse(current[(int)difficulties[i], (int)Data.NodeCount])));
-                difficulty.Add(time, new JSONValue(float.Parse(current[(int)difficulties[i], (int)Data.Time])));
-                difficulty.Add(errorMargin, new JSONValue(float.Parse(current[(int)difficulties[i], (int)Data.ErrorMargin])));
-                JSONObject vector = new JSONObject();
-                vector.Add("x", new JSONValue(int.Parse(current[(int)difficulties[i], (int)Data.DimensionX])));
-                vector.Add("y", new JSONValue(int.Parse(current[(int)difficulties[i], (int)Data.DimensionY])));
-                difficulty.Add(dimensions, vector);
-                difficultySettings.Add(difficulties[i].ToString(), difficulty);
+                for (int i = 0; i < difficulties.Length; i++)
+                {
+                    JSONObject difficulty = new JSONObject();
+                    difficulty.Add(nodeCount, new JSONValue(int.Parse(current[(int)difficulties[i], (int)Data.NodeCount])));
+                    difficulty.Add(time, new JSONValue(float.Parse(current[(int)difficulties[i], (int)Data.Time])));
+                    difficulty.Add(errorMargin, new JSONValue(float.Parse(current[(int)difficulties[i], (int)Data.ErrorMargin])));
+                    JSONObject vector = new JSONObject();
+                    vector.Add("x", new JSONValue(int.Parse(current[(int)difficulties[i], (int)Data.DimensionX])));
+                    vector.Add("y", new JSONValue(int.Parse(current[(int)difficulties[i], (int)Data.DimensionY])));
+                    difficulty.Add(dimensions, vector);
+                    difficultySettings.Add(difficulties[i].ToString(), difficulty);
+                }
+            }
+            catch (Exception ex) {
+                Debug.Log(ex);
+                return;
             }
             PlayerPrefs.SetString("difficultySettings", difficultySettings.ToString());
             PlayerPrefs.Save();
