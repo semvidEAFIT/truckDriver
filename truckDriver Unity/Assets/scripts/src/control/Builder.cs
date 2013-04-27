@@ -41,9 +41,8 @@ public class Builder : MonoBehaviour
             Building b = buildings[(int)node.x, (int)node.y].AddComponent<Building>();
             b.Position = i;
 			if(i==0 && !rate){
-			    vectorPosition = new Vector3(b.transform.position.x,b.transform.position.y + 9,b.transform.position.z);
+			    vectorPosition = new Vector3(b.transform.position.x,b.transform.position.y,b.transform.position.z);
 				truck=Instantiate(truck,vectorPosition,truck.transform.rotation)as GameObject;
-				rate=true;
 			}
         }
         loadedDay = currentDay;

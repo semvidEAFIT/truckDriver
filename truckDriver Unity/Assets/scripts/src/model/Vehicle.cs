@@ -4,8 +4,8 @@ public class Vehicle : MonoBehaviour
 {
 	public bool shift;
 	public Vector3 nextPsotion;
-	public float widthBlock;
-	public float heigthBlock;
+	private float widthBlock;
+	private float heigthBlock;
 	private float  finalmove;
 	private bool move;
 	void Awake(){
@@ -65,7 +65,7 @@ public class Vehicle : MonoBehaviour
 	
 	public void setNextPosition( Vector3  position, float ancho, float alto){
 		nextPsotion=position;	
-		nextPsotion.y=nextPsotion.y+9;		
+		nextPsotion.y=nextPsotion.y+heigthBlock;		
 		this.widthBlock=ancho;
 		Debug.Log(widthBlock);
 		this.heigthBlock=alto;
