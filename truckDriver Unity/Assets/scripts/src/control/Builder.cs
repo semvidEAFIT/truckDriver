@@ -5,9 +5,11 @@ public class Builder : MonoBehaviour
     private GameObject[,] buildings;
     public GameObject street;
     public GameObject building;
+	public GameObject truck;
     private Vector2 distance;
+	private bool rate=false;
     private Day loadedDay;
-
+	private Vector3 vectorPosition ;
     void Awake() {
         buildings = new GameObject[(int)LevelSettings.Instance.CityDimensions.x, (int)LevelSettings.Instance.CityDimensions.y];
         distance = new Vector2((street.transform.localScale.x) / (LevelSettings.Instance.CityDimensions.x+1), (street.transform.localScale.y) / (LevelSettings.Instance.CityDimensions.y+1));
@@ -21,15 +23,16 @@ public class Builder : MonoBehaviour
             }
         }
     }
-
+	
     public void buildCity(Day currentDay)
     {
-        if(loadedDay != null){
+		if(loadedDay != null){
             for (int i = 0; i < loadedDay.TspCase.Nodes.Length; i++)
             {
                 Vector2 node = loadedDay.TspCase.Nodes[i];
                 GameObject b = buildings[(int)node.x, (int)node.y];
                 DestroyImmediate(b.GetComponent<Building>());
+				//Destroy(truck);
             }
         }
         for (int i = 0; i < currentDay.TspCase.Nodes.Length; i++)
@@ -37,7 +40,13 @@ public class Builder : MonoBehaviour
             Vector2 node = currentDay.TspCase.Nodes[i];
             Building b = buildings[(int)node.x, (int)node.y].AddComponent<Building>();
             b.Position = i;
+			if(i==0 && !rate){
+			    vectorPosition = new Vector3(b.transform.position.x,b.transform.position.y + 9,b.transform.position.z);
+				truck=Instantiate(truck,vectorPosition,truck.transform.rotation)as GameObject;
+				rate=true;
+			}
         }
         loadedDay = currentDay;
+        
     }
 }
