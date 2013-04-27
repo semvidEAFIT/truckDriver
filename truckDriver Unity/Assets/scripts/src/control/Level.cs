@@ -3,6 +3,7 @@ using System;
 public class Level : MonoBehaviour
 {
 	private bool levelComplete = false;
+	private bool win;
     public Builder builder;
 
     private const int daysPerLevel = 3;
@@ -93,11 +94,15 @@ public class Level : MonoBehaviour
         }
         else 
         {
-            if (budget <= 0)
-			{
-				Debug.Log ("Level Complete");
+			if(budget <= 0){
+				Debug.Log ("Level Complete/Lose");
 				levelComplete = true;
+				win = false;
 				
+			} else {
+				Debug.Log ("Level Complete/Win");
+				levelComplete = true;
+				win = true;
 			}
         }
         Debug.Log(budget);
@@ -105,36 +110,69 @@ public class Level : MonoBehaviour
 	
 	private void OnGUI()
     {
-		if (levelComplete == true)
+		if (win==true && levelComplete == true) //((win == false)&&(levelComplete == true))
 		{
-			
-			if(GUI.Button (new Rect(Screen.width / 8, Screen.height / 
-				6, 3*Screen.width / 8, Screen.height / 3), "Easy"))	
-			{
-				LevelSettings.Instance.Difficulty = Difficulty.Easy;
-				Debug.Log (LevelSettings.Instance.Difficulty);
-			}
-			if(GUI.Button (new Rect(Screen.width / 2, Screen.height / 
-				6, 3 * Screen.width / 8, Screen.height / 3), "Medium"))
-			{
-				LevelSettings.Instance.Difficulty = Difficulty.Medium;
-				Debug.Log (LevelSettings.Instance.Difficulty);
-			}
-			if(GUI.Button (new Rect(Screen.width / 8, Screen.height / 
-				2, 3 * Screen.width / 8, Screen.height / 3), "Hard"))
-			{
-				LevelSettings.Instance.Difficulty = Difficulty.Hard;
-				Debug.Log (LevelSettings.Instance.Difficulty);
-			}
-			if(GUI.Button (new Rect(Screen.width / 2, Screen.height / 
-				2, 3 * Screen.width / 8, Screen.height / 3), "Extreme"))
-			{
-				LevelSettings.Instance.Difficulty = Difficulty.Medium;
-				Debug.Log (LevelSettings.Instance.Difficulty);
-			}
-			
-			levelComplete = false;
-			
+			if(LevelSettings.Instance.Difficulty == Difficulty.Easy){
+				if(GUI.Button (new Rect(Screen.width / 8, Screen.height / 6+100, 3*Screen.width / 8, Screen.height / 3), "Try Again"))	
+				{
+					LevelSettings.Instance.Difficulty = LevelSettings.Instance.Difficulty;
+					Debug.Log ("Try Again - Winner - Easy");
+				}
+				if(GUI.Button (new Rect(Screen.width / 2, Screen.height / 6+100, 3 * Screen.width / 8, Screen.height / 3), "Next Difficulty"))
+				{
+					LevelSettings.Instance.Difficulty = Difficulty.Medium;
+					Debug.Log (LevelSettings.Instance.Difficulty);
+					Debug.Log ("Try Again - Winner - ToMedium");
+				}
+							levelComplete = false;
+			}else if(LevelSettings.Instance.Difficulty == Difficulty.Medium){
+				if(GUI.Button (new Rect(Screen.width / 8, Screen.height / 6+100, 3*Screen.width / 8, Screen.height / 3), "Try Again"))	
+				{
+					LevelSettings.Instance.Difficulty = LevelSettings.Instance.Difficulty;
+					Debug.Log ("Try Again - Winner - Medium");
+				}
+				if(GUI.Button (new Rect(Screen.width / 2, Screen.height / 6+100, 3 * Screen.width / 8, Screen.height / 3), "Next Difficulty"))
+				{
+					LevelSettings.Instance.Difficulty = Difficulty.Hard;
+					Debug.Log (LevelSettings.Instance.Difficulty);
+					Debug.Log ("Try Again - Winner - Tohard");
+				}
+				levelComplete = false;
+			}else if(LevelSettings.Instance.Difficulty == Difficulty.Hard){
+				if(GUI.Button (new Rect(Screen.width / 8, Screen.height / 6+100, 3*Screen.width / 8, Screen.height / 3), "Try Again"))	
+				{
+					LevelSettings.Instance.Difficulty = LevelSettings.Instance.Difficulty;
+					Debug.Log ("Try Again - Winner - Hard");
+				}
+				if(GUI.Button (new Rect(Screen.width / 2, Screen.height / 6+100, 3 * Screen.width / 8, Screen.height / 3), "Next Difficulty"))
+				{
+					LevelSettings.Instance.Difficulty = Difficulty.Extreme;
+					Debug.Log (LevelSettings.Instance.Difficulty);
+					Debug.Log ("Try Again - Winner - ToExtreme");
+				}
+				levelComplete = false;
+			}else{
+				if(GUI.Button (new Rect(Screen.width / 8, Screen.height / 6+100, 3*Screen.width / 8, Screen.height / 3), "Try Again"))	
+				{
+					LevelSettings.Instance.Difficulty = LevelSettings.Instance.Difficulty;
+					Debug.Log ("Try Again - Winner - Extreme");
+				}
+				if(GUI.Button (new Rect(Screen.width / 2, Screen.height / 6+100, 3 * Screen.width / 8, Screen.height / 3), "Next Difficulty"))
+				{
+					LevelSettings.Instance.Difficulty = Difficulty.Extreme;
+					Debug.Log (LevelSettings.Instance.Difficulty);
+					Debug.Log ("Try Again - Winner - ToExtreme");
+				}
+				levelComplete = false;
+			}	
+		}else if(win == false && levelComplete == true){
+				if(GUI.Button (new Rect(Screen.width / 2-200, Screen.height / 2-100, Screen.width / 4, Screen.height / 4), "Try Again"))	
+				{
+					LevelSettings.Instance.Difficulty = LevelSettings.Instance.Difficulty;
+					Debug.Log ("Try Again - Loser");
+					levelComplete = false;					
+				}
+
 		}
 	}
 }
