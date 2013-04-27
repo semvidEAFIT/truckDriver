@@ -44,15 +44,17 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+	
+	public float travelCost=1;
 
     public void addNodeToSelection(int b) {
         index++;
         if(index < playerSolution.Length){
             if (b == 0) return;
             playerSolution[index] = b;
-            spentMoney += currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
+            spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
         }else{
-            spentMoney += currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
+            spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
             Level.Instance.nextDay(playerSolution, spentMoney);
         }
     }
