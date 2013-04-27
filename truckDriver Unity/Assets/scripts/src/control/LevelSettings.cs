@@ -53,10 +53,6 @@ public class LevelSettings
 
     private LevelSettings()
     {
-        if (!PlayerPrefs.HasKey("difficultySettings") && PlayerPrefs.GetString("difficultySettings") != null && PlayerPrefs.GetString("difficultySettings") != "")
-        {
-            Options.createNonExistentSettings();
-        }
         setSettings();
     }
 
