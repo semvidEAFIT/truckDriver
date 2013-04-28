@@ -28,13 +28,13 @@ public class Building : MonoBehaviour
         collider.enabled = false;
         Player.Instance.addNodeToSelection(position);
 		//Debug.Log(transform.localScale.x);
-		Player.Instance.moveTruck(transform.position,transform.localScale.x,transform.localScale.y);
+		Player.Instance.moveTruck(transform.position);
 		
 	 }
 
     public void OnDestroy() {
         collider.enabled = false;
-        renderer.material.color = Color.gray;
+        renderer.material.color = new Color32(238,226,181,255);
     }
 
 }

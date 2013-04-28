@@ -73,5 +73,5 @@ public class LevelSettings
 
 public enum Difficulty
 {
-    Easy, Medium, Hard
+    Easy = 0, Medium, Hard, Extreme
 }

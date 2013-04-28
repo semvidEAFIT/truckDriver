@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         }
     }
 	
-	public void moveTruck(Vector3 position,float ancho, float alto){
-		 truck.GetComponent<Vehicle>().setNextPosition(position,ancho,alto);
+	public void moveTruck(Vector3 position){
+		 truck.GetComponent<Vehicle>().setNextPosition(position);
 	}
 }
