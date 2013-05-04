@@ -24,6 +24,9 @@ public class Building : MonoBehaviour
 
     public void OnMouseDown()
     {
+        if(position == 0 && !Player.Instance.CanVisitOrigin){
+            return;
+        }
         renderer.material.color = Color.green;
         collider.enabled = false;
         Player.Instance.addNodeToSelection(position);
