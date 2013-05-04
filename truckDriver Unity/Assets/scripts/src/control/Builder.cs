@@ -26,11 +26,6 @@ public class Builder : MonoBehaviour
 		buildingY = (LevelSettings.Instance.CityDimensions.y * distance.y - streetSize*(LevelSettings.Instance.CityDimensions.y)) / LevelSettings.Instance.CityDimensions.y;
 		buildingsScale = Mathf.Min(buildingX/building.transform.localScale.x, buildingY/building.transform.localScale.y);
 		
-		Debug.Log("scale " + buildingsScale);
-		Debug.Log("x " + buildingX);
-		Debug.Log("y " + buildingY);
-		Debug.Log((int)LevelSettings.Instance.CityDimensions.x);
-		
         for (int i = 0; i < LevelSettings.Instance.CityDimensions.x; i++)
         {
             for (int j = 0; j < LevelSettings.Instance.CityDimensions.y; j++)
