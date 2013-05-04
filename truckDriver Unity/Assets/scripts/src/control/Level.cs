@@ -12,6 +12,9 @@ public class Level : MonoBehaviour
         get { return days; }
     }
     private int currentDay;
+	public int CurrentDayNumber{
+		get{return currentDay;}
+	}
     public Day CurrentDay {
         get {
             if(currentDay < daysPerLevel){
@@ -116,7 +119,7 @@ public class Level : MonoBehaviour
             }
             if (GUI.Button(new Rect(Screen.width / 3, Screen.height / 2, Screen.width / 3, Screen.height / 4), "Quit"))
             {
-                Application.LoadLevel("MainMenu");
+                Application.LoadLevel("Main Menu");
             }
         }
     }

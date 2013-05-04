@@ -3,6 +3,24 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject truck;
+	public GameObject Truck {
+		get {
+			return this.truck;
+		}
+	}
+	
+	private bool doneMoving;
+	public bool DoneMoving {
+		get {
+			return this.doneMoving;
+		}
+		set {
+			doneMoving = value;
+		}
+	}
+	
+	private bool doneSelecting;
+	
     private static float travelCost = 1.0f;
 
     private static Player instance;
@@ -42,6 +60,8 @@ public class Player : MonoBehaviour
     }
 
     void Awake() {
+		doneMoving=false;
+		doneSelecting=false;
         if (instance == null)
         {
             instance = this;
@@ -53,6 +73,13 @@ public class Player : MonoBehaviour
         }
 		
     }
+	
+	void Update(){
+		if(doneMoving && doneSelecting){
+			NextLevel();
+		}
+	}
+	
     public void addNodeToSelection(int b) {
         //Debug.Log("Position" + b + " Index"+ index + " Lenght" + playerSolution.Length);
         if(index < playerSolution.Length){
@@ -62,9 +89,15 @@ public class Player : MonoBehaviour
             index++;
         }else{
             spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
-            Level.Instance.nextDay(playerSolution, spentMoney);
+            doneSelecting=true;
         }
     }
+	
+	public void NextLevel(){
+		doneSelecting=false;
+		doneMoving=false;
+		Level.Instance.nextDay(playerSolution, spentMoney);
+	}
 	
 	public void moveTruck(Vector3 position){
 		 truck.GetComponent<Vehicle>().setNextPosition(position);

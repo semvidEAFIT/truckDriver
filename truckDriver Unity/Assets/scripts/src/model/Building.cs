@@ -19,7 +19,10 @@ public class Building : MonoBehaviour
 
     public void Awake()
     {
-        renderer.material.color = Color.red;
+        if(position==0 && Level.Instance.CurrentDayNumber!=0){
+			Player.Instance.truck.GetComponent<Vehicle>().StartPosition=transform.position;
+		}
+		renderer.material.color = Color.red;
         collider.enabled = true;
     }
 

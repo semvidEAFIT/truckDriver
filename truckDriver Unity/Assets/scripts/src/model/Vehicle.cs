@@ -1,13 +1,19 @@
 using UnityEngine;
-using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
+	private Vector3 startPosition;
+	public Vector3 StartPosition {
+		get {
+			return this.startPosition;
+		}
+		set {
+			startPosition = value;
+		}
+	}
 	public bool shift;
 	public Vector3 nextPosition;
 	private Vector2 blockDistance;
-	private float xStart;
-	private float yStart;
 	private int fase =0;
 	private float streetSize;
 	public float speed=0.5f;
@@ -16,8 +22,6 @@ public class Vehicle : MonoBehaviour
 		blockDistance=LevelSettings.Instance.DistanceManhatan;
 		fase=0;
 		nextPosition=transform.position;
-		xStart=transform.position.x;
-		yStart=transform.position.y;
 	}
 
 	void Update(){
@@ -79,13 +83,19 @@ public class Vehicle : MonoBehaviour
 				transform.position = nextPosition;
 				target=transform.position;
 				fase=0;
+				Player.Instance.DoneMoving=true;
 			}
 			break;
 		}
 	}
-
+	
+	public void setOnStartPosition(){
+		transform.position = new Vector3(startPosition.x, startPosition.y+blockDistance.y, startPosition.z);
+	}
 
 	public void setNextPosition(Vector3  position){
+		Player.Instance.DoneMoving=false;
+			
 		nextPosition=position;	
 		nextPosition.y = nextPosition.y + blockDistance.y/2;
 		if(transform.position.x <= position.x){
