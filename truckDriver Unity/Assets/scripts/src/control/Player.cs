@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Vehicle truck;
+    public GameObject truck;
+    private static float travelCost = 1.0f;
 
     private static Player instance;
     public static Player Instance
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
           currentDay = value; 
           playerSolution = new int[currentDay.Solution.Length];
           playerSolution[0] = 0;
-          index = 0;
+          index = 1;
       }
     }
 
@@ -33,6 +34,13 @@ public class Player : MonoBehaviour
     private int[] playerSolution;
     private int index;
 
+    public bool CanVisitOrigin
+    {
+        get {
+            return index == playerSolution.Length; 
+        }
+    }
+
     void Awake() {
         if (instance == null)
         {
@@ -43,19 +51,22 @@ public class Player : MonoBehaviour
             Debug.Log("Solo puede haber un Player");
             Destroy(this.gameObject);
         }
+		
     }
-	
-	public float travelCost=1;
-
     public void addNodeToSelection(int b) {
-        index++;
+        //Debug.Log("Position" + b + " Index"+ index + " Lenght" + playerSolution.Length);
         if(index < playerSolution.Length){
             if (b == 0) return;
             playerSolution[index] = b;
             spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
+            index++;
         }else{
             spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
             Level.Instance.nextDay(playerSolution, spentMoney);
         }
     }
+	
+	public void moveTruck(Vector3 position){
+		 truck.GetComponent<Vehicle>().setNextPosition(position);
+	}
 }

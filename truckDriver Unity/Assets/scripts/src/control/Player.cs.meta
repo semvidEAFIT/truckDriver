@@ -2,7 +2,8 @@ fileFormatVersion: 2
 guid: 67a0bdd37d2b0a64186e089b08bfe1c4
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - truck: {fileID: 100000, guid: cbb10a3a32c9a9c4489c3d219ac66337, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

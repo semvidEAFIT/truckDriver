@@ -1,6 +1,7 @@
 using Boomlagoon.JSON;
 using UnityEngine;
 using System;
+using System.IO;
 
 public class Options : MonoBehaviour
 {
@@ -18,12 +19,9 @@ public class Options : MonoBehaviour
     private void Awake()
     {
         current = new string[difficulties.Length, data.Length];
-        if (!PlayerPrefs.HasKey("difficultySettings"))
-        {
-            createNonExistentSettings();
-        }
+        TextAsset config = Resources.Load("configuration") as TextAsset;
+        difficultySettings = JSONObject.Parse(config.text);
         
-        difficultySettings = JSONObject.Parse(PlayerPrefs.GetString("difficultySettings"));
         for (int i = 0; i < difficulties.Length; i++)
         {
             JSONObject difficulty = difficultySettings.GetObject(difficulties[i].ToString());
@@ -36,52 +34,54 @@ public class Options : MonoBehaviour
         }
     }
 
-    public static void createNonExistentSettings()
-    {
-        JSONObject difficultySettings = new JSONObject();
-        JSONObject easy = new JSONObject();
-        easy.Add(time, new JSONValue(easyTime));
-        easy.Add(nodeCount, new JSONValue(easyNodeCount));
-        easy.Add(errorMargin, new JSONValue(easyErrorMargin));
-        JSONObject vector = new JSONObject();
-        vector.Add("x", new JSONValue(easyDimensionsX));
-        vector.Add("y", new JSONValue(easyDimensionsY));
-        easy.Add(dimensions, vector);
-        difficultySettings.Add(Difficulty.Easy.ToString(), easy);
+    //public static void createNonExistentSettings()
+    //{
+    //    JSONObject difficultySettings = new JSONObject();
+    //    JSONObject easy = new JSONObject();
+    //    easy.Add(time, new JSONValue(easyTime));
+    //    easy.Add(nodeCount, new JSONValue(easyNodeCount));
+    //    easy.Add(errorMargin, new JSONValue(easyErrorMargin));
+    //    JSONObject vector = new JSONObject();
+    //    vector.Add("x", new JSONValue(easyDimensionsX));
+    //    vector.Add("y", new JSONValue(easyDimensionsY));
+    //    easy.Add(dimensions, vector);
+    //    difficultySettings.Add(Difficulty.Easy.ToString(), easy);
 
-        JSONObject medium = new JSONObject();
-        medium.Add(time, new JSONValue(mediumTime));
-        medium.Add(nodeCount, new JSONValue(mediumNodeCount));
-        medium.Add(errorMargin, new JSONValue(mediumErrorMargin));
-        vector = new JSONObject();
-        vector.Add("x", new JSONValue(mediumDimensionsX));
-        vector.Add("y", new JSONValue(mediumDimensionsY));
-        medium.Add(dimensions, vector);
-        difficultySettings.Add(Difficulty.Medium.ToString(), medium);
+    //    JSONObject medium = new JSONObject();
+    //    medium.Add(time, new JSONValue(mediumTime));
+    //    medium.Add(nodeCount, new JSONValue(mediumNodeCount));
+    //    medium.Add(errorMargin, new JSONValue(mediumErrorMargin));
+    //    vector = new JSONObject();
+    //    vector.Add("x", new JSONValue(mediumDimensionsX));
+    //    vector.Add("y", new JSONValue(mediumDimensionsY));
+    //    medium.Add(dimensions, vector);
+    //    difficultySettings.Add(Difficulty.Medium.ToString(), medium);
 
-        JSONObject hard = new JSONObject();
-        hard.Add(time, new JSONValue(hardTime));
-        hard.Add(nodeCount, new JSONValue(hardNodeCount));
-        hard.Add(errorMargin, new JSONValue(hardErrorMargin));
-        vector = new JSONObject();
-        vector.Add("x", new JSONValue(hardDimensionsX));
-        vector.Add("y", new JSONValue(hardDimensionsY));
-        hard.Add(dimensions, vector);
-        difficultySettings.Add(Difficulty.Hard.ToString(), hard);
+    //    JSONObject hard = new JSONObject();
+    //    hard.Add(time, new JSONValue(hardTime));
+    //    hard.Add(nodeCount, new JSONValue(hardNodeCount));
+    //    hard.Add(errorMargin, new JSONValue(hardErrorMargin));
+    //    vector = new JSONObject();
+    //    vector.Add("x", new JSONValue(hardDimensionsX));
+    //    vector.Add("y", new JSONValue(hardDimensionsY));
+    //    hard.Add(dimensions, vector);
+    //    difficultySettings.Add(Difficulty.Hard.ToString(), hard);
 
-        JSONObject extreme = new JSONObject();
-        extreme.Add(time, new JSONValue(extremeTime));
-        extreme.Add(nodeCount, new JSONValue(extremeNodeCount));
-        extreme.Add(errorMargin, new JSONValue(extremeErrorMargin));
-        vector = new JSONObject();
-        vector.Add("x", new JSONValue(extremeDimensionsX));
-        vector.Add("y", new JSONValue(extremeDimensionsY));
-        extreme.Add(dimensions, vector);
-        difficultySettings.Add(Difficulty.Extreme.ToString(), extreme);
+    //    JSONObject extreme = new JSONObject();
+    //    extreme.Add(time, new JSONValue(extremeTime));
+    //    extreme.Add(nodeCount, new JSONValue(extremeNodeCount));
+    //    extreme.Add(errorMargin, new JSONValue(extremeErrorMargin));
+    //    vector = new JSONObject();
+    //    vector.Add("x", new JSONValue(extremeDimensionsX));
+    //    vector.Add("y", new JSONValue(extremeDimensionsY));
+    //    extreme.Add(dimensions, vector);
+    //    difficultySettings.Add(Difficulty.Extreme.ToString(), extreme);
 
-        PlayerPrefs.SetString("difficultySettings", difficultySettings.ToString());
-        PlayerPrefs.Save();
-    }
+    //    StreamWriter writer = new StreamWriter("assets/resources/configuration.txt");
+    //    writer.Write(difficultySettings.ToString());
+    //    writer.Flush();
+    //    writer.Close();
+    //}
 
     private void OnGUI()
     {
@@ -97,12 +97,12 @@ public class Options : MonoBehaviour
             for (int j = 0; j < data.Length; j++)
             {
                 GUI.Label(new Rect(10, (rects[i].height / (data.Length+1)) * (j+1), rects[i].width / 3 - 10, rects[i].height / (data.Length+1)),data[j].ToString());
-                current[i, j] = GUI.TextField(new Rect(rects[i].width / 3, (rects[i].height / (data.Length + 1)) * (j + 1), 2 * rects[i].width / 3 - 5, rects[i].height / (data.Length + 1) - 5), current[i, j]); 
+                GUI.TextField(new Rect(rects[i].width / 3, (rects[i].height / (data.Length + 1)) * (j + 1), 2 * rects[i].width / 3 - 5, rects[i].height / (data.Length + 1) - 5), current[i, j]); 
             }
             GUI.EndGroup();
         }
         //Boton para guardar
-        if(GUI.Button(new Rect(Screen.width/8, 5*Screen.height/6, 3*Screen.width/4, Screen.height/16), "Save")){
+        /*if(GUI.Button(new Rect(Screen.width/8, 5*Screen.height/6, 3*Screen.width/4, Screen.height/16), "Save")){
             difficultySettings = new JSONObject();
             try
             {
@@ -125,7 +125,7 @@ public class Options : MonoBehaviour
             }
             PlayerPrefs.SetString("difficultySettings", difficultySettings.ToString());
             PlayerPrefs.Save();
-        }
+        }*/
     }
 }
 

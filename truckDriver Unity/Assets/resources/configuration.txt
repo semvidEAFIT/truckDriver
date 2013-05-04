@@ -1,0 +1,1 @@
+{"Easy":{"time":600000,"nodeCount":5,"errorMargin":70,"dimensions":{"x":12,"y":13}},"Medium":{"time":600000,"nodeCount":10,"errorMargin":50.5,"dimensions":{"x":12,"y":13}},"Hard":{"time":600000,"nodeCount":20,"errorMargin":20,"dimensions":{"x":12,"y":13}},"Extreme":{"time":600000,"nodeCount":30,"errorMargin":10,"dimensions":{"x":12,"y":13}}}
