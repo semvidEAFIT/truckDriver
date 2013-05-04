@@ -52,24 +52,27 @@ public class Builder : MonoBehaviour
 				//Destroy(truck);
             }
         }
-        for (int i = 0; i < currentDay.TspCase.Nodes.Length; i++)
+		
+		for (int i = 0; i < currentDay.TspCase.Nodes.Length; i++)
         {
-            Vector2 node = currentDay.TspCase.Nodes[i];
-            Building b = buildings[(int)node.x, (int)node.y].AddComponent<Building>();
-            b.Position = i;
+	        Vector2 node = currentDay.TspCase.Nodes[i];
+	        Building b = buildings[(int)node.x, (int)node.y].AddComponent<Building>();
+	        b.Position = i;
 			if(i==0 && !rate){
 				//b.transform.position.y + distance.y/2 + streetSize/2
 			    vectorPosition = new Vector3(b.transform.position.x,b.transform.position.y + 9,b.transform.position.z);
 				truck=Instantiate(truck,vectorPosition,truck.transform.rotation)as GameObject;
-//				truck.GetComponent<Vehicle>().widthBlock=distance.x;
-//				
-//				truck.GetComponent<Vehicle>().heigthBlock=9;
+	//				truck.GetComponent<Vehicle>().widthBlock=distance.x;
+	//				
+	//				truck.GetComponent<Vehicle>().heigthBlock=9;
 				truck.GetComponent<Vehicle>().setStretSize(streetSize);
 				rate=true;
 			
-        }
+	    	}
+		}
+        
         loadedDay = currentDay;
         
-    }
+    
  }
 }
