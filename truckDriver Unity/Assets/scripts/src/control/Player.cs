@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+<<<<<<< HEAD
     public Vehicle truck;
     private static float travelCost = 1.0f;
+=======
+    public GameObject truck;
+
+>>>>>>> 59fe21c3c3bcc59aa69dd00315143b6ed5770ce3
     private static Player instance;
     public static Player Instance
     {
@@ -50,8 +55,8 @@ public class Player : MonoBehaviour
             Debug.Log("Solo puede haber un Player");
             Destroy(this.gameObject);
         }
+		
     }
-
     public void addNodeToSelection(int b) {
         //Debug.Log("Position" + b + " Index"+ index + " Lenght" + playerSolution.Length);
         if(index < playerSolution.Length){
@@ -64,4 +69,8 @@ public class Player : MonoBehaviour
             Level.Instance.nextDay(playerSolution, spentMoney);
         }
     }
+	
+	public void moveTruck(Vector3 position){
+		 truck.GetComponent<Vehicle>().setNextPosition(position);
+	}
 }
