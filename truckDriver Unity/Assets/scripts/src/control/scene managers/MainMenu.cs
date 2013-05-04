@@ -14,14 +14,11 @@ public class MainMenu : MonoBehaviour {
 	}
 	void OnGUI() {
 		
-		if (GUI.Button(new Rect(3*Screen.width/8, 4*Screen.height/16, Screen.width/4, Screen.height/8), "Jugar")){
+		if (GUI.Button(new Rect(3*Screen.width/8, 5*Screen.height/16, Screen.width/4, Screen.height/8), "Jugar")){
 			Application.LoadLevel("Game");
 		}
-		if (GUI.Button(new Rect(3*Screen.width/8, 7*Screen.height/16, Screen.width/4, Screen.height/8), "Tutorial")){
+		if (GUI.Button(new Rect(3*Screen.width/8, 9*Screen.height/16, Screen.width/4, Screen.height/8), "Tutorial")){
 			Application.LoadLevel("Game");
-		}
-		if (GUI.Button(new Rect(3*Screen.width/8, 10*Screen.height/16, Screen.width/4, Screen.height/8), "Opciones")){
-			Application.LoadLevel("Options");
 		}
 	}
 }

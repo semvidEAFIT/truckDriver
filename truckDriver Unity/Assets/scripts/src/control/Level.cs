@@ -68,6 +68,7 @@ public class Level : MonoBehaviour
         timePerDay = LevelSettings.Instance.Time;
         currentDay = 0;
         loadDay();
+		Player.Instance.truck = builder.truck;
         Player.Instance.CurrentDay = CurrentDay;
     }
 
