@@ -53,10 +53,6 @@ public class LevelSettings
 
     private LevelSettings()
     {
-        if (!PlayerPrefs.HasKey("difficultySettings") && PlayerPrefs.GetString("difficultySettings") != null && PlayerPrefs.GetString("difficultySettings") != "")
-        {
-            Options.createNonExistentSettings();
-        }
         setSettings();
     }
 
@@ -73,5 +69,5 @@ public class LevelSettings
 
 public enum Difficulty
 {
-    Easy = 0, Medium, Hard, Extreme
+    Easy = 0, Medium = 1, Hard = 2, Extreme = 3
 }

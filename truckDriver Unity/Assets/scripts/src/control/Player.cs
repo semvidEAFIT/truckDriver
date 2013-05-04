@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Vehicle truck;
-
+    private static float travelCost = 1.0f;
     private static Player instance;
     public static Player Instance
     {
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
           currentDay = value; 
           playerSolution = new int[currentDay.Solution.Length];
           playerSolution[0] = 0;
-          index = 0;
+          index = 1;
       }
     }
 
@@ -32,6 +32,13 @@ public class Player : MonoBehaviour
 
     private int[] playerSolution;
     private int index;
+
+    public bool CanVisitOrigin
+    {
+        get {
+            return index == playerSolution.Length; 
+        }
+    }
 
     void Awake() {
         if (instance == null)
@@ -46,13 +53,14 @@ public class Player : MonoBehaviour
     }
 
     public void addNodeToSelection(int b) {
-        index++;
+        //Debug.Log("Position" + b + " Index"+ index + " Lenght" + playerSolution.Length);
         if(index < playerSolution.Length){
             if (b == 0) return;
             playerSolution[index] = b;
-            spentMoney += currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
+            spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
+            index++;
         }else{
-            spentMoney += currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
+            spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
             Level.Instance.nextDay(playerSolution, spentMoney);
         }
     }
