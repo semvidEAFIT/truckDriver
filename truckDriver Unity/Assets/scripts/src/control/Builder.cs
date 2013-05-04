@@ -66,7 +66,6 @@ public class Builder : MonoBehaviour
 				
 				truck.GetComponent<Vehicle>().heigthBlock=9;
 				truck.GetComponent<Vehicle>().setStretSize(streetSize);
-				Debug.Log(truck.GetComponent<Vehicle>().heigthBlock);
 				rate=true;
 			
         }

@@ -76,9 +76,6 @@ public class Vehicle : MonoBehaviour
 				}
 				
 			}else if (fase ==4 ){
-				/*Debug.Log(transform.position.x);
-				Debug.Log(nextPosition.x);
-				Debug.Log (target);*/
 			if (transform.position.x != nextPosition.x ){
 				 transform.localScale = new Vector3(1f,1f,0.5f);
 				if (target.x >0){
