@@ -3,7 +3,8 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     private int position;
-
+	private GameObject newSphere;
+	
     public int Position
     {
         get { return position; }
@@ -28,13 +29,20 @@ public class Building : MonoBehaviour
             return;
         }
         renderer.material.color = Color.green;
-        collider.enabled = false;
+		
+		newSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		newSphere.transform.position = transform.position+transform.forward*-5;
+		collider.enabled = false;
         Player.Instance.addNodeToSelection(position);
-    }
 
+    }
+	
+	
     public void OnDestroy() {
         collider.enabled = false;
         renderer.material.color = new Color32(238,226,181,255);
+		Destroy(newSphere);
+		
     }
 
 }
