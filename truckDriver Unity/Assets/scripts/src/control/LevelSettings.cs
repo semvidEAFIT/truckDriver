@@ -15,6 +15,16 @@ public class LevelSettings
             return instance;
         }
     }
+	
+	private Vector3 distanceManhatan;
+	public Vector3 DistanceManhatan {
+		get {
+			return this.distanceManhatan;
+		}
+		set {
+			distanceManhatan = value;
+		}
+	}
 
     private int nodeCount;
     public int NodeCount

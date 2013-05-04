@@ -30,7 +30,10 @@ public class Building : MonoBehaviour
         renderer.material.color = Color.green;
         collider.enabled = false;
         Player.Instance.addNodeToSelection(position);
-    }
+		//Debug.Log(transform.localScale.x);
+		Player.Instance.moveTruck(transform.position);
+		
+	 }
 
     public void OnDestroy() {
         collider.enabled = false;
