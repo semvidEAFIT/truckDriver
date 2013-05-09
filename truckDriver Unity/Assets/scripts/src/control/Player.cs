@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 		}
 	}
 	
+	public GameObject trace;
+	
 	private bool doneMoving;
 	public bool DoneMoving {
 		get {
@@ -58,9 +60,13 @@ public class Player : MonoBehaviour
             return index == playerSolution.Length; 
         }
     }
+	
+	private GameObject actualTrace;
 
     void Awake() {
-		doneMoving=false;
+		actualTrace = Instantiate(trace, this.transform.position, Quaternion.identity) as GameObject;
+		actualTrace.transform.parent=this.transform;
+		doneMoving=true;
 		doneSelecting=false;
         if (instance == null)
         {
@@ -91,11 +97,18 @@ public class Player : MonoBehaviour
             spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
             doneSelecting=true;
         }
+		
+		
     }
 	
 	public void NextLevel(){
+		Destroy(actualTrace);
+		actualTrace= Instantiate(trace, this.transform.position, Quaternion.identity) as GameObject;
+		actualTrace.transform.parent=this.transform;
 		doneSelecting=false;
-		doneMoving=false;
+		doneMoving=true;
+		trace.GetComponent<TrailRenderer>().time=0;
+		trace.GetComponent<TrailRenderer>().time=1000000;
 		Level.Instance.nextDay(playerSolution, spentMoney);
 	}
 	
