@@ -3,6 +3,11 @@ using UnityEngine;
 public class Builder : MonoBehaviour
 {
     private GameObject[,] buildings;
+	public GameObject[,] Buildings {
+		get {
+			return this.buildings;
+		}
+	}
     public GameObject street;
     public GameObject building;
 	public GameObject truck;
