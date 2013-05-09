@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
 	
 	void Update(){
 		if(doneMoving && doneSelecting){
-			NextLevel();
+			
 		}
 	}
 	
@@ -102,17 +102,27 @@ public class Player : MonoBehaviour
     }
 	
 	public void NextLevel(){
+		
+		
 		Destroy(actualTrace);
 		actualTrace= Instantiate(trace, this.transform.position, Quaternion.identity) as GameObject;
 		actualTrace.transform.parent=this.transform;
+		
 		doneSelecting=false;
 		doneMoving=true;
-		trace.GetComponent<TrailRenderer>().time=0;
-		trace.GetComponent<TrailRenderer>().time=1000000;
+		
 		Level.Instance.nextDay(playerSolution, spentMoney);
 	}
 	
 	public void moveTruck(Vector3 position){
 		 truck.GetComponent<Vehicle>().setNextPosition(position);
+	}
+	
+	public void OnGUI(){
+		if(doneMoving && doneSelecting){
+			if(GUI.Button(new Rect(Screen.width/3, Screen.height/2 - 5 - Screen.height/4, Screen.width/3, Screen.height/4), "Next Day")){
+                NextLevel();
+            }
+		}
 	}
 }
