@@ -28,7 +28,7 @@ public class Building : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if(position == 0 && !Player.Instance.CanVisitOrigin){
+        if(position == 0 && !Player.Instance.CanVisitOrigin || !Player.Instance.DoneMoving){
             return;
         }
         renderer.material.color = Color.green;
