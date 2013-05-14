@@ -18,10 +18,17 @@ public class Vehicle : MonoBehaviour
 	private float streetSize;
 	public float speed=0.5f;
 	private Vector3 target;
+	
+	private int defaultDir;
+	
+	public bool isPlayerTruck;
+	public Component truckController;
+	
 	void Awake(){
 		blockDistance=LevelSettings.Instance.DistanceManhatan;
 		fase=0;
 		nextPosition=transform.position;
+		defaultDir=1;
 	}
 
 	void Update(){
@@ -83,7 +90,11 @@ public class Vehicle : MonoBehaviour
 				transform.position = nextPosition;
 				target=transform.position;
 				fase=0;
-				Player.Instance.DoneMoving=true;
+				if(isPlayerTruck){
+					truckController.GetComponent<Player>().DoneMoving=true;
+				} else {
+					truckController.GetComponent<TraceSolver>().IsMoving=false;
+				}
 			}
 			break;
 		}
@@ -94,14 +105,26 @@ public class Vehicle : MonoBehaviour
 	}
 
 	public void setNextPosition(Vector3  position){
-		Player.Instance.DoneMoving=false;
+		if(isPlayerTruck){
+			truckController.GetComponent<Player>().DoneMoving=false;
+		} else {
+			truckController.GetComponent<TraceSolver>().IsMoving=true;;
+		}
 			
 		nextPosition=position;	
 		nextPosition.y = nextPosition.y + blockDistance.y/2;
-		if(transform.position.x <= position.x){
+		if(transform.position.x < position.x){
 			target= new Vector3(transform.position.x+blockDistance.x/2,transform.position.y, transform.position.z);
+			defaultDir=1;
 		} else {
-			target= new Vector3(transform.position.x-blockDistance.x/2,transform.position.y, transform.position.z);
+			if(transform.position.x > position.x){
+				target= new Vector3(transform.position.x-blockDistance.x/2,transform.position.y, transform.position.z);
+				defaultDir=-1;
+			} else {
+				target= new Vector3(transform.position.x + defaultDir*blockDistance.x/2,transform.position.y, transform.position.z);
+				Debug.Log("entro");
+				defaultDir*=-1;
+			}
 		}
 		fase=1;
 	}

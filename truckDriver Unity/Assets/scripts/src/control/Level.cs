@@ -2,8 +2,11 @@ using UnityEngine;
 using System;
 public class Level : MonoBehaviour
 {
-    public Builder builder;
-
+    public Builder builder;	public Builder Builder {
+		get {
+			return this.builder;
+		}
+	}
     private const int daysPerLevel = 3;
 
     private Day[] days;
