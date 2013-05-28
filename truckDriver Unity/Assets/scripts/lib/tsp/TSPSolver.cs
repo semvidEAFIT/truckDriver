@@ -310,9 +310,9 @@ public class TSPSolver
         return permutation;
     }
 
-    public static int calculateCost(int[] permutation, TSPCase tspCase)
+    public static float calculateCost(int[] permutation, TSPCase tspCase)
     {
-        int acum = tspCase.DistanceMatrix[permutation[permutation.Length - 1], permutation[0]];
+        float acum = tspCase.DistanceMatrix[permutation[permutation.Length - 1], permutation[0]];
         for (int i = 0; i < permutation.Length - 1; i++)
         {
             acum += tspCase.DistanceMatrix[permutation[i], permutation[i + 1]];

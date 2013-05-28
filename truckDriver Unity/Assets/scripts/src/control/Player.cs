@@ -102,8 +102,6 @@ public class Player : MonoBehaviour
     }
 	
 	public void NextLevel(){
-		
-		
 		Destroy(actualTrace);
 		actualTrace= Instantiate(trace, this.transform.position, Quaternion.identity) as GameObject;
 		actualTrace.transform.parent=this.transform;
@@ -112,6 +110,7 @@ public class Player : MonoBehaviour
 		doneMoving=true;
 		
 		Level.Instance.nextDay(playerSolution, spentMoney);
+		spentMoney = 0;
 	}
 	
 	public void moveTruck(Vector3 position){

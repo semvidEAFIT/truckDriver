@@ -57,18 +57,25 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+		Debug.Log(LevelSettings.Instance.Difficulty);
         budget = 0.0d;
         days = new Day[daysPerLevel];
         days[0] = new Day(TSPSolver.generateCase(LevelSettings.Instance.NodeCount, LevelSettings.Instance.CityDimensions));
-        budget += TSPSolver.calculateCost(days[0].Solution, days[0].TspCase);
+        double cost = TSPSolver.calculateCost(days[0].Solution, days[0].TspCase);
+		budget += cost;
+		Debug.Log("Costo "+ 0 + ": "+cost);
         for (int i = 1; i < daysPerLevel; i++)
         {
             days[i] = new Day(TSPSolver.generateCase(LevelSettings.Instance.NodeCount, days[0].TspCase.Nodes[0], LevelSettings.Instance.CityDimensions));
-            budget += TSPSolver.calculateCost(days[i].Solution, days[i].TspCase);
+            cost = TSPSolver.calculateCost(days[i].Solution, days[i].TspCase);
+			Debug.Log("Costo "+ i + ": "+cost);
+			budget += cost;
         }
-
+		
+		Debug.Log("Optimo:"+budget);
         budget += budget * (LevelSettings.Instance.ErrorMargin / 100.0f);
-        timePerDay = LevelSettings.Instance.Time;
+        Debug.Log("Maximo:"+budget);
+		timePerDay = LevelSettings.Instance.Time;
         currentDay = 0;
         loadDay();
 		Player.Instance.truck = builder.truck;
@@ -89,6 +96,7 @@ public class Level : MonoBehaviour
 
     public void nextDay(int[] playerSolution, double spentMoney) {
         budget -= spentMoney;
+		Debug.Log("SpentMoney = "+spentMoney+", Budget = "+budget);
         currentDay++;
         if (currentDay < daysPerLevel)
         {
