@@ -122,7 +122,6 @@ public class Vehicle : MonoBehaviour
 				defaultDir=-1;
 			} else {
 				target= new Vector3(transform.position.x + defaultDir*blockDistance.x/2,transform.position.y, transform.position.z);
-				Debug.Log("entro");
 				defaultDir*=-1;
 			}
 		}
