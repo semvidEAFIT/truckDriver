@@ -61,13 +61,20 @@ public class Player : MonoBehaviour
         }
     }
 	
+	public GameObject traceSolverPrefab;
+	
+	private GameObject traceSolverInstance;
+	
 	private GameObject actualTrace;
+	
+	private bool traceSolverSpawned;
 
     void Awake() {
 		actualTrace = Instantiate(trace, this.transform.position, Quaternion.identity) as GameObject;
 		actualTrace.transform.parent=this.transform;
 		doneMoving=true;
 		doneSelecting=false;
+		traceSolverSpawned=false;
         if (instance == null)
         {
             instance = this;
@@ -81,8 +88,9 @@ public class Player : MonoBehaviour
     }
 	
 	void Update(){
-		if(doneMoving && doneSelecting){
-			
+		if(doneMoving && doneSelecting && !traceSolverSpawned){
+			traceSolverInstance = Instantiate(traceSolverPrefab, this.transform.position + new Vector3(0,0,-0.5f), Quaternion.identity) as GameObject;
+			traceSolverSpawned=true;
 		}
 	}
 	
@@ -102,6 +110,10 @@ public class Player : MonoBehaviour
     }
 	
 	public void NextLevel(){
+		Destroy(traceSolverInstance);
+		traceSolverInstance=null;
+		traceSolverSpawned=false;
+		
 		Destroy(actualTrace);
 		actualTrace= Instantiate(trace, this.transform.position, Quaternion.identity) as GameObject;
 		actualTrace.transform.parent=this.transform;

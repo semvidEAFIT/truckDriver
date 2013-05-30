@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class Builder : MonoBehaviour
@@ -19,6 +20,8 @@ public class Builder : MonoBehaviour
 	private float buildingX;
 	private float buildingY;
 	
+	public Material[] buildingMaterials;
+	
 	public int streetSize=5;
 
     void Awake() {
@@ -33,6 +36,8 @@ public class Builder : MonoBehaviour
 		buildingY = (LevelSettings.Instance.CityDimensions.y * distance.y - streetSize*(LevelSettings.Instance.CityDimensions.y)) / LevelSettings.Instance.CityDimensions.y;
 		buildingsScale = Mathf.Min(buildingX/building.transform.localScale.x, buildingY/building.transform.localScale.y);
 		
+		if(buildingMaterials.Length==0) Debug.LogError("No buildings materials assigned!");
+		
 		rate=false;
 		
         for (int i = 0; i < LevelSettings.Instance.CityDimensions.x; i++)
@@ -40,6 +45,7 @@ public class Builder : MonoBehaviour
             for (int j = 0; j < LevelSettings.Instance.CityDimensions.y; j++)
             {			
 				buildings[i, j] = Instantiate(building, new Vector3(x0+i*distance.x, y0-j*distance.y, 0), Quaternion.identity) as GameObject;
+				buildings[i, j].renderer.material = buildingMaterials[Random.Range(0, buildingMaterials.Length)];
 				
 				buildings[i,j].transform.localScale *= buildingsScale;
             }
