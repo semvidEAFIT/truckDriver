@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class Vehicle : MonoBehaviour
@@ -131,6 +132,4 @@ public class Vehicle : MonoBehaviour
 	public void setStretSize( float size){
 		streetSize=size;
 	}
-    
-	
 }

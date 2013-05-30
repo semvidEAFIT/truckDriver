@@ -122,6 +122,7 @@ public class Player : MonoBehaviour
 		doneMoving=true;
 		
 		Level.Instance.nextDay(playerSolution, spentMoney);
+		spentMoney = 0;
 	}
 	
 	public void moveTruck(Vector3 position){

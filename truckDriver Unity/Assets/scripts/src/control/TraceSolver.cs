@@ -28,7 +28,6 @@ public class TraceSolver : MonoBehaviour {
 	}
 	
 	void Update () {
-		Debug.Log(currNode);
 		
 		if(!isMoving && currNode<LevelSettings.Instance.NodeCount){
 			moveTruck(path[currNode].position);

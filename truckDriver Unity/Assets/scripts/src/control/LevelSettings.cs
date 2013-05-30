@@ -50,7 +50,7 @@ public class LevelSettings
         get { return cityDimensions; }
     }
 
-    private Difficulty difficulty = Difficulty.Medium;
+    private Difficulty difficulty = Difficulty.Easy;
     public Difficulty Difficulty
     {
         get { return difficulty; }
@@ -68,7 +68,8 @@ public class LevelSettings
 
     private void setSettings()
     {
-        JSONObject settings = JSONObject.Parse(PlayerPrefs.GetString("difficultySettings")).GetObject(difficulty.ToString());
+        TextAsset settingsFile = Resources.Load("configuration") as TextAsset;
+		JSONObject settings = JSONObject.Parse(settingsFile.text).GetObject(difficulty.ToString());
         nodeCount = (int)settings.GetNumber(Options.nodeCount);
         time = (float)settings.GetNumber(Options.time);
         errorMargin = (float)settings.GetNumber(Options.errorMargin);
