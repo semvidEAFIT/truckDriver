@@ -123,8 +123,8 @@ public class Level : MonoBehaviour
         }
     }
 
-    void OnGUI() { 
-        if(lostLevel){
+    void OnGUI() {
+		if(lostLevel){
             if(GUI.Button(new Rect(Screen.width/3, Screen.height/2 - 5 - Screen.height/4, Screen.width/3, Screen.height/4), "Retry")){
                 Application.LoadLevel("Game");
             }
@@ -132,6 +132,12 @@ public class Level : MonoBehaviour
             {
                 Application.LoadLevel("Main Menu");
             }
-        }
+        } else {
+			float countdownTimer = timePerDay - Time.timeSinceLevelLoad;
+			if(countdownTimer <= 0){
+				lostLevel=true;
+			}
+			GUI.Label(new Rect(Screen.width/20,Screen.height/200,Screen.width/4,Screen.height/16), "Time Remaining: " + (int)countdownTimer);
+		}
     }
 }
