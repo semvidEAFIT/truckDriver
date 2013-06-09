@@ -28,7 +28,6 @@ public class TSPSolver
             }
             nodes[i] = v;
         }
-        int startingNode = Random.Range(0, nodes.Length);
         TSPCase tspCase = new TSPCase(nodes, spaceDimensions);
         return tspCase;
     }
@@ -54,7 +53,6 @@ public class TSPSolver
             }
             nodes[i] = v;
         }
-        int startingNode = Random.Range(0, nodes.Length);
         TSPCase tspCase = new TSPCase(nodes, spaceDimensions);
         return tspCase;
     }
@@ -140,8 +138,25 @@ public class TSPSolver
             }
             temp *= tempRatio;
         }
-        return (int[])bestS.Clone();
+        return organizeNodes((int[])bestS.Clone(), problem);
     }
+
+	public static int[] organizeNodes (int[] solution, TSPCase problem)
+	{
+		int originPos = -1;
+		for(int i = 0; i < solution.Length; i++){
+			if(solution[i] == 0){
+				originPos = i;
+			}
+		}
+	
+		int[] organizedSolution = new int[solution.Length];
+		for(int j=0; j<organizedSolution.Length; j++){
+			organizedSolution[j] = solution[(j+originPos) % solution.Length];
+		}
+		
+		return organizedSolution;
+	}
 
     // public static TSPSolution solveCaseTheirs(TSPCase problem) {
     //        int randomTestCount = 20;
