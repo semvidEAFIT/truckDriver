@@ -92,6 +92,10 @@ public class Player : MonoBehaviour
 			traceSolverInstance = Instantiate(traceSolverPrefab, this.transform.position + new Vector3(0,0,-0.5f), Quaternion.identity) as GameObject;
 			traceSolverSpawned=true;
 		}
+		
+		if(doneMoving && doneSelecting){
+			Level.Instance.showReportScreen();
+		}
 	}
 	
     public void addNodeToSelection(int b) {
@@ -127,13 +131,5 @@ public class Player : MonoBehaviour
 	
 	public void moveTruck(Vector3 position){
 		 truck.GetComponent<Vehicle>().setNextPosition(position);
-	}
-	
-	public void OnGUI(){
-		if(doneMoving && doneSelecting){
-			if(GUI.Button(new Rect(Screen.width/3, Screen.height/2 - 5 - Screen.height/4, Screen.width/3, Screen.height/4), "Next Day")){
-                NextLevel();
-            }
-		}
 	}
 }
