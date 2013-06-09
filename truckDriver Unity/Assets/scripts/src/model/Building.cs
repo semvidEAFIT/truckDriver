@@ -12,7 +12,8 @@ public class Building : MonoBehaviour
             position = value;
             if (position == 0)
             {
-                renderer.material.color = Color.blue;
+				resetFrames();
+				transform.FindChild("BlueFrame").gameObject.SetActive(true);
             }
         }
     }
@@ -22,7 +23,10 @@ public class Building : MonoBehaviour
         if(position==0 && Level.Instance.CurrentDayNumber!=0){
 			Player.Instance.truck.GetComponent<Vehicle>().StartPosition=transform.position;
 		}
-		renderer.material.color = Color.red;
+		//turn red
+		resetFrames();
+		transform.FindChild("RedFrame").gameObject.SetActive(true);
+		
         collider.enabled = true;
     }
 
@@ -31,14 +35,13 @@ public class Building : MonoBehaviour
         if(position == 0 && !Player.Instance.CanVisitOrigin || !Player.Instance.DoneMoving){
             return;
         }
-        renderer.material.color = Color.green;
+        //turn green
+		resetFrames();
+		transform.FindChild("GreenFrame").gameObject.SetActive(true);
 		
-		newSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		newSphere.transform.position = transform.position+transform.forward*-5;
 		collider.enabled = false;
         Player.Instance.addNodeToSelection(position);
 
-		//Debug.Log(transform.localScale.x);
 		Player.Instance.moveTruck(transform.position);
 	}
    
@@ -50,5 +53,11 @@ public class Building : MonoBehaviour
 		Destroy(newSphere);
 		
     }
+	
+	private void resetFrames(){
+		foreach (Transform child in transform) {
+            child.gameObject.SetActive(false);
+        }
+	}
 
 }

@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: 11443b33a59bd4d4e8601889ea5993ce
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - sourceFrame: {fileID: 2100000, guid: 03af5df81ddd2504cb8be0ea408213c8, type: 2}
+  - selectedFrame: {fileID: 2100000, guid: 01f016f9d10a46b448193fe8395840ea, type: 2}
+  - toSelectMterial: {fileID: 2100000, guid: 63a130397178e414fbb893b4279a3075, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
