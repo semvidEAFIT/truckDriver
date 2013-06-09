@@ -49,12 +49,12 @@ public class Building : MonoBehaviour
 	
     public void OnDestroy() {
         collider.enabled = false;
-        renderer.material.color = new Color32(238,226,181,255);
+        resetFrames();
 		Destroy(newSphere);
 		
     }
 	
-	private void resetFrames(){
+	public void resetFrames(){
 		foreach (Transform child in transform) {
             child.gameObject.SetActive(false);
         }

@@ -46,7 +46,6 @@ public class Builder : MonoBehaviour
             {			
 				buildings[i, j] = Instantiate(building, new Vector3(x0+i*distance.x, y0-j*distance.y, 0), Quaternion.identity) as GameObject;
 				buildings[i, j].renderer.material = buildingMaterials[Random.Range(0, buildingMaterials.Length)];
-				
 				buildings[i,j].transform.localScale *= buildingsScale;
             }
         }
