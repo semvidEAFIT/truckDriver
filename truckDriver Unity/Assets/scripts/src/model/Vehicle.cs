@@ -12,8 +12,7 @@ public class Vehicle : MonoBehaviour
 			startPosition = value;
 		}
 	}
-	public bool shift;
-	public Vector3 nextPosition;
+	private Vector3 nextPosition;
 	private Vector2 blockDistance;
 	private int fase =0;
 	private float streetSize;
@@ -38,6 +37,7 @@ public class Vehicle : MonoBehaviour
 
 	void Update(){
 		
+		//TODO -- truck speed
 		if(isTurning){
 			if(Mathf.Abs(targetTurnDir - transform.eulerAngles.z)< 5){
 				transform.eulerAngles = new Vector3(0,0,targetTurnDir);

@@ -45,6 +45,10 @@ public class Level : MonoBehaviour
     {
         get { return instance; }
     }
+	
+	private bool onReportScreen;
+	private float timeSpent;
+	private bool calculatedTimeSpent;
 
     void Awake() {
         if (instance == null)
@@ -62,6 +66,8 @@ public class Level : MonoBehaviour
     {
 		Debug.Log(LevelSettings.Instance.Difficulty);
         budget = 0.0d;
+		calculatedTimeSpent=false;
+		onReportScreen=false;
         days = new Day[daysPerLevel];
         days[0] = new Day(TSPSolver.generateCase(LevelSettings.Instance.NodeCount, LevelSettings.Instance.CityDimensions));
         double cost = TSPSolver.calculateCost(days[0].Solution, days[0].TspCase);
@@ -122,9 +128,17 @@ public class Level : MonoBehaviour
             }
         }
     }
-
-    void OnGUI() { 
-        if(lostLevel){
+	
+	public void showReportScreen(){
+		onReportScreen=true;
+		if(!calculatedTimeSpent){
+			timeSpent=Time.timeSinceLevelLoad;
+			calculatedTimeSpent=true;
+		}
+		
+	}
+    void OnGUI() {
+		if(lostLevel){
             if(GUI.Button(new Rect(Screen.width/3, Screen.height/2 - 5 - Screen.height/4, Screen.width/3, Screen.height/4), "Retry")){
                 Application.LoadLevel("Game");
             }
@@ -132,6 +146,30 @@ public class Level : MonoBehaviour
             {
                 Application.LoadLevel("Main Menu");
             }
-        }
+        } else {
+			if(onReportScreen){
+				GUI.BeginGroup(new Rect(Screen.width/4 + Screen.width/8, Screen.height/4, 2*Screen.width/8, Screen.height/3));
+				GUI.Box(new Rect(0, 0, 2 * Screen.width / 8, Screen.height / 3), "");
+				GUI.Label(new Rect(110, 10, 200, 20), "Day " + (currentDay+1));
+				GUI.Label(new Rect(30, 50, 200, 20), "Time Spent: " + (int)timeSpent);
+				GUI.Label(new Rect(30, 75, 200, 20), "Budget Remaining: " + budget);
+				GUI.Label(new Rect(30, 100, 200, 20), "Budget Spent this day: " + Player.Instance.SpentMoney);
+				GUI.Label(new Rect(30, 125, 200, 20), "Best solution's budget: " + TSPSolver.calculateCost(CurrentDay.Solution, CurrentDay.TspCase));
+				if(GUI.Button(new Rect(75, 180, 100, 50), "Next Day")){
+					Player.Instance.NextLevel();
+					onReportScreen=false;
+				}
+				GUI.EndGroup();
+			}
+			
+			float countdownTimer = timePerDay - Time.timeSinceLevelLoad;
+			if(countdownTimer <= 0){
+				lostLevel=true;
+			}
+			double money = budget - Player.Instance.SpentMoney;
+			GUI.Label(new Rect(Screen.width/20,Screen.height/200,Screen.width/4,Screen.height/16), "Time Remaining: " + (int)countdownTimer);
+			GUI.Label(new Rect(Screen.width/4,Screen.height/200,Screen.width/4,Screen.height/16), "Budget Remaining: " + (int)money);
+			GUI.Label(new Rect(Screen.width/2,Screen.height/200,Screen.width/4,Screen.height/16), "Current Day: " + (currentDay+1));
+		}
     }
 }
