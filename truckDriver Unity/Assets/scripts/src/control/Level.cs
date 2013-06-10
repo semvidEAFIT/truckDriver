@@ -129,7 +129,7 @@ public class Level : MonoBehaviour
         }
     }
 	
-	public void showReportScreen(){
+	public void showDayReportScreen(){
 		onReportScreen=true;
 		if(!calculatedTimeSpent){
 			timeSpent=Time.timeSinceLevelLoad;
@@ -155,10 +155,17 @@ public class Level : MonoBehaviour
 				GUI.Label(new Rect(30, 75, 200, 20), "Budget Remaining: " + budget);
 				GUI.Label(new Rect(30, 100, 200, 20), "Budget Spent this day: " + Player.Instance.SpentMoney);
 				GUI.Label(new Rect(30, 125, 200, 20), "Best solution's budget: " + TSPSolver.calculateCost(CurrentDay.Solution, CurrentDay.TspCase));
-				if(GUI.Button(new Rect(75, 180, 100, 50), "Next Day")){
-					Player.Instance.NextLevel();
-					onReportScreen=false;
+				if (currentDay > daysPerLevel){
+		            if(GUI.Button(new Rect(75, 180, 100, 50), "Continue")){
+						//show level report screen
+					}
+		        } else {
+					if(GUI.Button(new Rect(75, 180, 100, 50), "Next Day")){
+						Player.Instance.NextLevel();
+						onReportScreen=false;
+					}
 				}
+				
 				GUI.EndGroup();
 			}
 			
