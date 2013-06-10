@@ -46,8 +46,13 @@ public class Level : MonoBehaviour
         get { return instance; }
     }
 	
-	private bool onReportScreen;
+	private bool onDayReportScreen;
+	private bool onLevelReportScreen;
+	private float totalTimeSpent;
 	private float timeSpent;
+	private double totalBudgetSpent;
+	private double totalLevelBudget;
+	private double totalSolutionBudget;
 	private bool calculatedTimeSpent;
 
     void Awake() {
@@ -66,8 +71,12 @@ public class Level : MonoBehaviour
     {
 		Debug.Log(LevelSettings.Instance.Difficulty);
         budget = 0.0d;
+		timeSpent = 0;
+		totalSolutionBudget=0;
+		totalBudgetSpent = 0.0d;
 		calculatedTimeSpent=false;
-		onReportScreen=false;
+		onLevelReportScreen=false;
+		onDayReportScreen=false;
         days = new Day[daysPerLevel];
         days[0] = new Day(TSPSolver.generateCase(LevelSettings.Instance.NodeCount, LevelSettings.Instance.CityDimensions));
         double cost = TSPSolver.calculateCost(days[0].Solution, days[0].TspCase);
@@ -86,6 +95,7 @@ public class Level : MonoBehaviour
         Debug.Log("Maximo:"+budget);
 		timePerDay = LevelSettings.Instance.Time;
         currentDay = 0;
+		totalLevelBudget=budget;
         loadDay();
 		Player.Instance.truck = builder.truck;
         Player.Instance.CurrentDay = CurrentDay;
@@ -107,6 +117,7 @@ public class Level : MonoBehaviour
         budget -= spentMoney;
 		Debug.Log("SpentMoney = "+spentMoney+", Budget = "+budget);
         currentDay++;
+		calculatedTimeSpent=false;
         if (currentDay < daysPerLevel)
         {
             loadDay();
@@ -130,12 +141,18 @@ public class Level : MonoBehaviour
     }
 	
 	public void showDayReportScreen(){
-		onReportScreen=true;
-		if(!calculatedTimeSpent){
-			timeSpent=Time.timeSinceLevelLoad;
-			calculatedTimeSpent=true;
+		if(budget<0.0d){
+			lostLevel=true;
+		} else {
+			if(!calculatedTimeSpent){
+				onDayReportScreen=true;
+				totalTimeSpent+= Time.timeSinceLevelLoad;
+				timeSpent= Time.timeSinceLevelLoad;
+				totalBudgetSpent+= Player.Instance.SpentMoney;
+				totalSolutionBudget+= TSPSolver.calculateCost(CurrentDay.Solution, CurrentDay.TspCase);
+				calculatedTimeSpent=true;
+			}
 		}
-		
 	}
     void OnGUI() {
 		if(lostLevel){
@@ -147,22 +164,41 @@ public class Level : MonoBehaviour
                 Application.LoadLevel("Main Menu");
             }
         } else {
-			if(onReportScreen){
+			if(onLevelReportScreen){
+				GUI.BeginGroup(new Rect(Screen.width/4 + Screen.width/8, Screen.height/4, 2*Screen.width/8, Screen.height/3));
+				GUI.Box(new Rect(0, 0, 2 * Screen.width / 8, Screen.height / 3), "");
+				GUI.Label(new Rect(80, 10, 200, 20), "Level Complete");
+				GUI.Label(new Rect(30, 50, 200, 20), "Total budget remaining: " + budget);
+				GUI.Label(new Rect(30, 75, 200, 20), "Total time spent: " + (int)totalTimeSpent);
+				GUI.Label(new Rect(30, 100, 200, 20), "Total budget spent: " + totalBudgetSpent);
+				GUI.Label(new Rect(30, 124, 200, 20), "Best solution's budget: " + totalSolutionBudget);
+				if(GUI.Button(new Rect(30, 180, 100, 50), "Main Menu")){
+					Application.LoadLevel("Main Menu");
+				}
+				if(GUI.Button(new Rect(140, 180, 100, 50), "Continue!")){
+					onLevelReportScreen=false;
+					Player.Instance.NextLevel();
+				}
+				GUI.EndGroup();
+			}
+			if(onDayReportScreen){
 				GUI.BeginGroup(new Rect(Screen.width/4 + Screen.width/8, Screen.height/4, 2*Screen.width/8, Screen.height/3));
 				GUI.Box(new Rect(0, 0, 2 * Screen.width / 8, Screen.height / 3), "");
 				GUI.Label(new Rect(110, 10, 200, 20), "Day " + (currentDay+1));
-				GUI.Label(new Rect(30, 50, 200, 20), "Time Spent: " + (int)timeSpent);
+				GUI.Label(new Rect(30, 50, 200, 20), "Time Spent: " +  (int)timeSpent);
 				GUI.Label(new Rect(30, 75, 200, 20), "Budget Remaining: " + budget);
 				GUI.Label(new Rect(30, 100, 200, 20), "Budget Spent this day: " + Player.Instance.SpentMoney);
 				GUI.Label(new Rect(30, 125, 200, 20), "Best solution's budget: " + TSPSolver.calculateCost(CurrentDay.Solution, CurrentDay.TspCase));
-				if (currentDay > daysPerLevel){
+				if (currentDay+1 >= daysPerLevel){
 		            if(GUI.Button(new Rect(75, 180, 100, 50), "Continue")){
 						//show level report screen
+						onDayReportScreen=false;
+						onLevelReportScreen=true;
 					}
 		        } else {
 					if(GUI.Button(new Rect(75, 180, 100, 50), "Next Day")){
 						Player.Instance.NextLevel();
-						onReportScreen=false;
+						onDayReportScreen=false;
 					}
 				}
 				
