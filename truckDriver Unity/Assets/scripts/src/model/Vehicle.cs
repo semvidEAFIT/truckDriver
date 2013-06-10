@@ -16,7 +16,7 @@ public class Vehicle : MonoBehaviour
 	private Vector2 blockDistance;
 	private int fase =0;
 	private float streetSize;
-	public float speed=0.5f;
+	public float speed=5;
 	private Vector3 target;
 	private bool isTurning;
 	private float targetTurnDir;
@@ -60,10 +60,10 @@ public class Vehicle : MonoBehaviour
 					//not there yet
 					if(transform.position.x<target.x){
 						//right
-						transform.Translate(speed,0,0,Space.World);
+						transform.Translate(speed*Time.deltaTime*10,0,0,Space.World);
 					} else {
 						//left
-						transform.Translate(-speed,0,0,Space.World);
+						transform.Translate(-speed*Time.deltaTime*10,0,0,Space.World);
 					}
 				} else {
 					//set on place
@@ -79,9 +79,9 @@ public class Vehicle : MonoBehaviour
 			case 2:
 				if(Mathf.Abs(target.x-transform.position.x)>1){
 					if(transform.position.x<target.x){
-						transform.Translate(speed,0,0,Space.World);
+						transform.Translate(speed*Time.deltaTime*10,0,0,Space.World);
 					} else {
-						transform.Translate(-speed,0,0,Space.World);
+						transform.Translate(-speed*Time.deltaTime*10,0,0,Space.World);
 					}
 				} else {
 					transform.position = new Vector3(target.x, transform.position.y, transform.position.z);
@@ -103,9 +103,9 @@ public class Vehicle : MonoBehaviour
 			case 3:
 				if(Mathf.Abs(transform.position.y-target.y)>1){
 					if(transform.position.y<target.y){
-						transform.Translate(0,speed,0,Space.World);
+						transform.Translate(0,speed*Time.deltaTime*10,0,Space.World);
 					} else {
-						transform.Translate(0,-speed,0,Space.World);
+						transform.Translate(0,-speed*Time.deltaTime*10,0,Space.World);
 					}
 				} else {
 					if(transform.position.x < nextPosition.x){
@@ -122,9 +122,9 @@ public class Vehicle : MonoBehaviour
 			case 4:
 				if(Mathf.Abs(transform.position.x-target.x)>1){
 					if(transform.position.x<target.x){
-						transform.Translate(speed,0,0,Space.World);
+						transform.Translate(speed*Time.deltaTime*10,0,0,Space.World);
 					} else {
-						transform.Translate(-speed,0,0,Space.World);
+						transform.Translate(-speed*Time.deltaTime*10,0,0,Space.World);
 					}
 				} else {
 					transform.position = nextPosition;
