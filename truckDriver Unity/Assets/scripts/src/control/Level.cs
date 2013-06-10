@@ -175,7 +175,7 @@ public class Level : MonoBehaviour
 				if(GUI.Button(new Rect(30, 180, 100, 50), "Main Menu")){
 					Application.LoadLevel("Main Menu");
 				}
-				if(GUI.Button(new Rect(140, 180, 100, 50), "Continue!")){
+				if(GUI.Button(new Rect(140, 180, 100, 50), "Next Level")){
 					onLevelReportScreen=false;
 					Player.Instance.NextLevel();
 				}
@@ -216,3 +216,4 @@ public class Level : MonoBehaviour
 		}
     }
 }
+    

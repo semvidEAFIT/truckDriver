@@ -16,7 +16,6 @@ public class TraceSolver : MonoBehaviour {
 	}
 	private bool done;
 	
-	//TODO -- SolverTrace day solution
 	void Awake() {
 		isMoving=false;
 		done=false;

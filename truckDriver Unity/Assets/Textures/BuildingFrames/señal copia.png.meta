@@ -1,3 +1,40 @@
+<<<<<<< HEAD:truckDriver Unity/Assets/Textures/Buildings/Edificio 05.png.meta
+fileFormatVersion: 2
+guid: de67fa39c4d7f0c4782613c8cd11206d
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: -1
+  nPOTScale: 1
+  lightmap: 0
+  compressionQuality: 50
+  textureType: -1
+  buildTargetSettings: []
+  userData: 
+=======
 fileFormatVersion: 2
 guid: a6907c7b91bd84a4e8b29c30c942f137
 TextureImporter:
@@ -33,3 +70,4 @@ TextureImporter:
   textureType: -1
   buildTargetSettings: []
   userData: 
+>>>>>>> 22cae25b023b481fa55cd5adf808360b6dac668d:truckDriver Unity/Assets/Textures/BuildingFrames/señal copia.png.meta
