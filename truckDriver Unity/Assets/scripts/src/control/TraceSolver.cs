@@ -19,7 +19,7 @@ public class TraceSolver : MonoBehaviour {
 	void Awake() {
 		isMoving=false;
 		done=false;
-		currNode=0;
+		currNode=1;
 		path= new Transform[LevelSettings.Instance.NodeCount];
 		for (int i=0; i<path.Length; i++){
 			Vector2 nodeGridPos = Level.Instance.CurrentDay.TspCase.Nodes[Level.Instance.CurrentDay.Solution[i]];
@@ -29,13 +29,14 @@ public class TraceSolver : MonoBehaviour {
 	
 	void Update () {
 		
-		if(!isMoving && currNode<LevelSettings.Instance.NodeCount){
+		if(!done && !isMoving && currNode<LevelSettings.Instance.NodeCount){
 			moveTruck(path[currNode].position);
 			currNode++;
 		}
 		
-		if(!isMoving && currNode==LevelSettings.Instance.NodeCount){
+		if(!done && !isMoving && currNode==LevelSettings.Instance.NodeCount){
 			moveTruck(path[0].position);
+			done=true;
 		}
 	}
 	
