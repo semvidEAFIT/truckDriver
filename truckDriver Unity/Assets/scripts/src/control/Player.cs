@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
 		}
 		
 		if(doneMoving && doneSelecting){
-			Level.Instance.showReportScreen();
+			Level.Instance.showDayReportScreen();
 		}
 	}
 	
