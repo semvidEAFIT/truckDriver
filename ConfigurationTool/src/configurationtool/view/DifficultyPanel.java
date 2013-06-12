@@ -1,6 +1,7 @@
 package configurationtool.view;
 
 import configurationtool.model.Difficulty;
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 /**
  *
@@ -30,11 +31,11 @@ public class DifficultyPanel extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        tfTime = new javax.swing.JTextField();
-        tfNodeCount = new javax.swing.JTextField();
-        tfDimensionX = new javax.swing.JTextField();
-        tfErrorMargin = new javax.swing.JTextField();
-        tfDimensionY = new javax.swing.JTextField();
+        ftfNodeCount = new javax.swing.JFormattedTextField();
+        ftfErrorMargin = new javax.swing.JFormattedTextField();
+        ftfDimensionX = new javax.swing.JFormattedTextField();
+        ftfDimensionY = new javax.swing.JFormattedTextField();
+        ftfTime = new javax.swing.JFormattedTextField();
 
         setBorder(null);
 
@@ -45,6 +46,41 @@ public class DifficultyPanel extends javax.swing.JPanel {
         jLabel3.setText("Margen de error");
 
         jLabel2.setText("Tiempo");
+
+        ftfNodeCount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        ftfNodeCount.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                ftfNodeCountPropertyChange(evt);
+            }
+        });
+
+        ftfErrorMargin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ftfErrorMargin.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                ftfErrorMarginPropertyChange(evt);
+            }
+        });
+
+        ftfDimensionX.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ftfDimensionX.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                ftfDimensionXPropertyChange(evt);
+            }
+        });
+
+        ftfDimensionY.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ftfDimensionY.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                ftfDimensionYPropertyChange(evt);
+            }
+        });
+
+        ftfTime.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ftfTime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                ftfTimePropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -58,14 +94,14 @@ public class DifficultyPanel extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(tfTime)
-                    .addComponent(tfErrorMargin, javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ftfNodeCount)
+                    .addComponent(ftfErrorMargin, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tfDimensionX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ftfDimensionX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfDimensionY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tfNodeCount))
+                        .addComponent(ftfDimensionY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfTime))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -74,44 +110,85 @@ public class DifficultyPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfNodeCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfNodeCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(tfTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(tfErrorMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfErrorMargin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(tfDimensionY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfDimensionX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfDimensionX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ftfDimensionY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ftfNodeCountPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ftfNodeCountPropertyChange
+        try{
+            difficulty.setNodeCount(((Number)ftfNodeCount.getValue()).intValue());
+        }catch(InvalidValue ex){
+            ftfNodeCount.setValue(difficulty.getNodeCount());
+        }
+    }//GEN-LAST:event_ftfNodeCountPropertyChange
+
+    private void ftfErrorMarginPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ftfErrorMarginPropertyChange
+        try{
+            difficulty.setErrorMargin(((Number)ftfErrorMargin.getValue()).floatValue());
+        }catch(InvalidValue ex){
+            ftfErrorMargin.setValue(difficulty.getErrorMargin());
+        }
+    }//GEN-LAST:event_ftfErrorMarginPropertyChange
+
+    private void ftfDimensionXPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ftfDimensionXPropertyChange
+        try{
+            difficulty.setDimensionsX(((Number)ftfDimensionX.getValue()).intValue());
+        }catch(InvalidValue ex){
+            ftfDimensionX.setValue(difficulty.getDimensions().getX());
+        }
+    }//GEN-LAST:event_ftfDimensionXPropertyChange
+
+    private void ftfDimensionYPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ftfDimensionYPropertyChange
+        try{
+            difficulty.setDimensionsY(((Number)ftfDimensionY.getValue()).intValue());
+        }catch(InvalidValue ex){
+            ftfDimensionY.setValue(difficulty.getDimensions().getY());
+        }
+    }//GEN-LAST:event_ftfDimensionYPropertyChange
+
+    private void ftfTimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ftfTimePropertyChange
+        try{
+            difficulty.setTime(((Number)ftfTime.getValue()).intValue());
+        }catch(InvalidValue ex){
+            ftfTime.setValue(difficulty.getTime());
+        }
+    }//GEN-LAST:event_ftfTimePropertyChange
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField ftfDimensionX;
+    private javax.swing.JFormattedTextField ftfDimensionY;
+    private javax.swing.JFormattedTextField ftfErrorMargin;
+    private javax.swing.JFormattedTextField ftfNodeCount;
+    private javax.swing.JFormattedTextField ftfTime;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField tfDimensionX;
-    private javax.swing.JTextField tfDimensionY;
-    private javax.swing.JTextField tfErrorMargin;
-    private javax.swing.JTextField tfNodeCount;
-    private javax.swing.JTextField tfTime;
     // End of variables declaration//GEN-END:variables
 
     //TODO -- Cambiar los valores del POJO segun los cambios en el panel
     
     public final void setDifficulty(Difficulty difficulty){
         this.difficulty = difficulty;
-        tfNodeCount.setText(difficulty.getNodeCount()+"");
-        tfTime.setText(difficulty.getTime()+"");
-        tfErrorMargin.setText(difficulty.getErrorMargin()+"");
-        tfDimensionX.setText(difficulty.getDimensions().x+"");
-        tfDimensionY.setText(difficulty.getDimensions().y+"");
+        ftfNodeCount.setValue(difficulty.getNodeCount());
+        ftfTime.setValue(difficulty.getTime());
+        ftfErrorMargin.setValue(difficulty.getErrorMargin());
+        ftfDimensionX.setValue((int)difficulty.getDimensions().x);
+        ftfDimensionY.setValue((int)difficulty.getDimensions().y);
     }
     
     public Difficulty getdifficulty(){

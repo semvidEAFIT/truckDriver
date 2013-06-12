@@ -3,6 +3,12 @@ package configurationtool.view;
 import configurationtool.controller.Controller;
 import configurationtool.model.Configuration;
 import configurationtool.model.Difficulty;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.CancellationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,21 +36,15 @@ public class ConfigurationToolFrame extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         tpDifficulties = new javax.swing.JTabbedPane();
-        btnSave = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         btnLoad = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(281, 192));
+        setPreferredSize(new java.awt.Dimension(273, 230));
         setResizable(false);
-
-        btnSave.setText("Guardar");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
 
         btnLoad.setText("Cargar");
         btnLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -53,35 +53,77 @@ public class ConfigurationToolFrame extends javax.swing.JFrame {
             }
         });
 
+        btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLoad)
+                    .addComponent(btnSave))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tpDifficulties)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btnLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tpDifficulties)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tpDifficulties, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSave)
-                    .addComponent(btnLoad)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadActionPerformed
-        setConfiguration(controller.loadConfiguration());
+        try {
+            setConfiguration(controller.loadConfiguration());
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Ha ocurrido un error cargando el archivo: "+ex,"Error!", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(ConfigurationToolFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CancellationException ca){
+        
+        }
     }//GEN-LAST:event_btnLoadActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        controller.saveConfiguration();
+        try {
+            controller.saveConfiguration();
+            JOptionPane.showMessageDialog(rootPane, "Se han guardado los cambios", "Guardado", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Ha ocurrido un error guardando el archivo: "+ex,"Error!", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(ConfigurationToolFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CancellationException ce) {
+        
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
@@ -123,10 +165,12 @@ public class ConfigurationToolFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane tpDifficulties;
     // End of variables declaration//GEN-END:variables
 
     public final void setConfiguration(Configuration configuration){
+        tpDifficulties.removeAll();
         for(int i = 0; i < configuration.getDifficulties().length; i++){
             Difficulty d = configuration.getDifficulties()[i];
             tpDifficulties.add(d.getLevel().toString(), new DifficultyPanel(d));
