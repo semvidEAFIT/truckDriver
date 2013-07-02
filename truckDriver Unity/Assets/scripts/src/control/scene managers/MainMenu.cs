@@ -10,11 +10,14 @@ public class MainMenu : MonoBehaviour {
 		if(skin != null){
 			GUI.skin = skin;
 		}
-		if (GUI.Button(new Rect(3*Screen.width/8, 5*Screen.height/16, Screen.width/4, Screen.height/8), "Jugar")){
+		
+		//GUI.BeginGroup(new Rect(Screen.width/10, Screen.height/3, Screen.width - Screen.width/5, Screen.height/3 - Screen.height/12));
+		if (GUI.Button(new Rect(Screen.width/6, 2*Screen.height/3, Screen.width/4.5f, (Screen.height/3 - Screen.height/12)/3), images[0])){
 			Application.LoadLevel("Game");
 		}
-		if (GUI.Button(new Rect(3*Screen.width/8, 9*Screen.height/16, Screen.width/4, Screen.height/8), "Tutorial")){
+		if (GUI.Button(new Rect(Screen.width/2 + Screen.width/12, 2*Screen.height/3,  Screen.width/4.5f, (Screen.height/3 - Screen.height/12)/3), images[1])){
 			Application.LoadLevel("Game");
 		}
+		//GUI.EndGroup();
 	}
 }
