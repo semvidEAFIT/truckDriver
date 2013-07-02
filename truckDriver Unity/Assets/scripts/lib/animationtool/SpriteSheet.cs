@@ -8,6 +8,10 @@ public class SpriteSheet : MonoBehaviour {
 	public int materialIndex;
 	public List<int> sequenceFrameCount = new List<int>();
 	
+	private Dictionary<string, int> mnemonics = new Dictionary<string, int>();
+	public List<string> keys;
+	public List<int> values;
+	
 	public bool loop;
 	public bool reverse;
 	public bool running = true;
@@ -20,20 +24,29 @@ public class SpriteSheet : MonoBehaviour {
 	public int currentSequence;
 	public int currentFrame;
 	public int lastFrame;
-	
 	public float fps;
 	
 	private SpriteSequence[] sequences;
-	private int colCount;
-	private int rowCount;
+	public int colCount;
+	public int rowCount;
 	public int currentRow;
 	public int currentCol;
 	
-	private List<ISpriteSheet> listeners;
+	private List<ISpriteSheetListener> listeners;
+	private Dictionary<int, List<ISpriteSheetListener>> frameListeners;
 	
 	void Awake() {
-		listeners = new List<ISpriteSheet>();
+		listeners = new List<ISpriteSheetListener>();
+		frameListeners = new Dictionary<int, List<ISpriteSheetListener>>();
 		sequences = new SpriteSequence[sequenceFrameCount.Count];
+		
+		mnemonics = new Dictionary<string, int>(keys.Count);
+		for(int i = 0; i < keys.Count; i++){
+			mnemonics.Add(keys[i], values[i]);
+		}
+		/*keys.Clear();
+		values.Clear();*/
+		
 		int counter = 0;
 		for (int i =0 ; i < sequences.Length ; i++){
 			sequences[i] = new SpriteSequence(counter, counter + sequenceFrameCount[i] - 1);
@@ -43,20 +56,15 @@ public class SpriteSheet : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		if (frameWidth != 0){
+		/*if (frameWidth != 0){
 			colCount = renderer.materials[materialIndex].mainTexture.width / frameWidth;
 		}
 		if (frameHeight != 0){
 			rowCount = renderer.materials[materialIndex].mainTexture.height / frameHeight;
-		}
+		}*/
 		
 		//renderer.materials[materialIndex].SetTextureScale("_MainTex", new Vector2(1f/colCount,1f/rowCount));
 		StartCoroutine(UpdateSprite());
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 	
 	private IEnumerator UpdateSprite()
@@ -117,6 +125,10 @@ public class SpriteSheet : MonoBehaviour {
 	    		}
 		    	UpdateFramePosition();
 		    	
+				if(frameListeners.ContainsKey(currentFrame)){
+					NotifyDisplayedFrame();
+				}
+				
 		    	Vector2 offset = new Vector2( (currentCol)/((float)colCount),(rowCount - 1 - currentRow)/((float)rowCount));
 	            renderer.materials[materialIndex].SetTextureOffset("_MainTex", offset);
 		    	
@@ -152,28 +164,122 @@ public class SpriteSheet : MonoBehaviour {
 		}
 	}
 	
-	public void setSecuence(Enum secuence) {
+	public void SetSequence(Enum secuence) {
 		int requested = Convert.ToInt32(secuence);
-		if(requested < 0 || requested > SecuenceCount){
-			throw new InvalidSecuenceException(requested);
-		}
-		CurrentSequence = requested;
+		SetSequence(requested);
 	}
 	
-	public void AddSpriteSheetListener(ISpriteSheet listener){
+	public void SetSequence(String secuence){
+		if(!mnemonics.ContainsKey(secuence)){
+			throw new InvalidSecuenceException(secuence);
+		}else{
+			SetSequence(mnemonics[secuence]);
+		}	
+	}
+	
+	public void SetSequence(int secuence){
+		if(secuence < 0 || secuence > SecuenceCount){
+			throw new InvalidSecuenceException(secuence);
+		}
+		CurrentSequence = secuence;
+	}
+	
+	public void AddSpriteSheetListener(ISpriteSheetListener listener){
 		if (!listeners.Contains(listener)){
 			listeners.Add(listener);
 		}
 	}
 	
-	public void RemoveSpriteSheetListener(ISpriteSheet listener){
+	public void AddSpriteSheetListener(ISpriteSheetListener listener, int secuence, int frame){
+		if(secuence >= 0 && secuence < SecuenceCount){
+			if(frame >= 0 && frame < sequenceFrameCount[secuence]){
+				int absoluteFrame = sequences[secuence].InitFrame + frame;
+				List<ISpriteSheetListener> list;
+				if(frameListeners.ContainsKey(absoluteFrame)){
+					list = frameListeners[absoluteFrame];
+				}else{
+					list = new List<ISpriteSheetListener>();
+					frameListeners.Add(absoluteFrame, list);
+				}
+				if(!list.Contains(listener)){
+					list.Add(listener);
+				}
+			}else{
+				throw new InvalidFrameException(frame);
+			}
+		}else{
+			throw new InvalidSecuenceException(secuence);
+		}
+	}
+
+	public void AddSpriteSheetListener(ISpriteSheetListener listener, Enum secuence, int frame){
+		int requested = Convert.ToInt32(secuence);
+		if(requested >= 0 && requested < SecuenceCount){
+			if(frame >= 0 && frame < sequenceFrameCount[requested]){
+				int absoluteFrame = sequences[requested].InitFrame + frame;
+				List<ISpriteSheetListener> list;
+				if(frameListeners.ContainsKey(absoluteFrame)){
+					list = frameListeners[absoluteFrame];
+				}else{
+					list = new List<ISpriteSheetListener>();
+					frameListeners.Add(absoluteFrame, list);
+				}
+				if(!list.Contains(listener)){
+					list.Add(listener);
+				}
+			}else{
+				throw new InvalidFrameException(frame);
+			}
+		}else{
+			throw new InvalidSecuenceException(secuence);
+		}
+	}
+	
+	public void AddSpriteSheetListener(ISpriteSheetListener listener, string secuence, int frame){
+		if(mnemonics.ContainsKey(secuence)){
+			int requested = mnemonics[secuence];
+			if(frame >= 0 && frame < sequenceFrameCount[requested]){
+				int absoluteFrame = sequences[requested].InitFrame + frame;
+				List<ISpriteSheetListener> list;
+				if(frameListeners.ContainsKey(absoluteFrame)){
+					list = frameListeners[absoluteFrame];
+				}else{
+					list = new List<ISpriteSheetListener>();
+					frameListeners.Add(absoluteFrame, list);
+				}
+				if(!list.Contains(listener)){
+					list.Add(listener);
+				}
+			}else{
+				throw new InvalidFrameException(frame);
+			}
+		}else{
+			throw new InvalidSecuenceException(secuence);
+		}
+	}
+	
+	public void RemoveSpriteSheetListener(ISpriteSheetListener listener){
 		listeners.Remove(listener);
+		foreach(List<ISpriteSheetListener> list in frameListeners.Values){
+			if(list.Contains(listener)){
+				list.Remove(listener);
+			}
+		}
 	}
 	
 	public void NotifySequenceEnded(){
-		foreach (ISpriteSheet iSpriteSheet in listeners){
+		foreach (ISpriteSheetListener iSpriteSheet in listeners){
 			iSpriteSheet.SequenceEnded(this);
 		}
+	}
+
+	void NotifyDisplayedFrame ()
+	{
+		foreach(List<ISpriteSheetListener> list in frameListeners.Values){
+			foreach(ISpriteSheetListener listener in list){
+				listener.DisplayedFrame(currentSequence, currentFrame - sequences[currentSequence].InitFrame, this);
+			}
+		}	
 	}
 	
 	public int SecuenceCount{

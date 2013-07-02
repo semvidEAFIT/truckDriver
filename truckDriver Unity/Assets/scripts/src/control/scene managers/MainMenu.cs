@@ -3,17 +3,13 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+	public Texture2D[] images;
+	public GUISkin skin;
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	void OnGUI() {
-		
+		if(skin != null){
+			GUI.skin = skin;
+		}
 		if (GUI.Button(new Rect(3*Screen.width/8, 5*Screen.height/16, Screen.width/4, Screen.height/8), "Jugar")){
 			Application.LoadLevel("Game");
 		}
