@@ -12,10 +12,12 @@ public class MainMenu : MonoBehaviour {
 		}
 		
 		//GUI.BeginGroup(new Rect(Screen.width/10, Screen.height/3, Screen.width - Screen.width/5, Screen.height/3 - Screen.height/12));
-		if (GUI.Button(new Rect(Screen.width/6, 2*Screen.height/3, Screen.width/4.5f, (Screen.height/3 - Screen.height/12)/3), images[0])){
+		skin.button.normal.background = images[0];
+		if (GUI.Button(new Rect(Screen.width/4, 2*Screen.height/3, images[0].width, images[0].height), "JUGAR")){
 			Application.LoadLevel("Game");
 		}
-		if (GUI.Button(new Rect(Screen.width/2 + Screen.width/12, 2*Screen.height/3,  Screen.width/4.5f, (Screen.height/3 - Screen.height/12)/3), images[1])){
+		skin.button.normal.background = images[1];
+		if (GUI.Button(new Rect(Screen.width/2, 2*Screen.height/3,  images[1].width, images[1].height), "TUTORIAL")){
 			Application.LoadLevel("Game");
 		}
 		//GUI.EndGroup();
