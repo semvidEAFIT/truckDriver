@@ -54,7 +54,10 @@ public class Level : MonoBehaviour
 	private double totalLevelBudget;
 	private double totalSolutionBudget;
 	private bool calculatedTimeSpent;
-
+	
+	public Texture2D[] botones;
+	public GUISkin skin;
+	
     void Awake() {
         if (instance == null)
         {
@@ -155,6 +158,7 @@ public class Level : MonoBehaviour
 		}
 	}
     void OnGUI() {
+		GUI.skin = skin;
 		if(lostLevel){
             if(GUI.Button(new Rect(Screen.width/3, Screen.height/2 - 5 - Screen.height/4, Screen.width/3, Screen.height/4), "Retry")){
                 Application.LoadLevel("Game");
@@ -210,9 +214,16 @@ public class Level : MonoBehaviour
 				lostLevel=true;
 			}
 			double money = budget - Player.Instance.SpentMoney;
-			GUI.Label(new Rect(Screen.width/20,Screen.height/200,Screen.width/4,Screen.height/16), "Time: " + (int)countdownTimer);
-			GUI.Label(new Rect(Screen.width/4,Screen.height/200,Screen.width/4,Screen.height/16), "Budget: " + (int)money);
-			GUI.Label(new Rect(Screen.width/2,Screen.height/200,Screen.width/4,Screen.height/16), "Day " + (currentDay+1));
+
+			GUI.Label(new Rect(Screen.width/20, 0, Screen.width/4, Screen.height/10), botones[0]);
+			GUI.Label(new Rect(Screen.width/10, Screen.height/80 ,Screen.width/4,Screen.height/10),((int)countdownTimer) / 60 + ":" + ((int)countdownTimer) % 60);
+			
+			GUI.Label(new Rect(Screen.width/20+Screen.width/3, 0, Screen.width/4, Screen.height/10), botones[1]);
+			GUI.Label(new Rect(Screen.width/10+Screen.width/3,Screen.height/80,Screen.width/4,Screen.height/10),(int)money + "");
+			
+			GUI.Label(new Rect(Screen.width/20+2*Screen.width/3, 0, Screen.width/4, Screen.height/10), botones[2]);
+			GUI.Label(new Rect(Screen.width/10+2*Screen.width/3,Screen.height/80,Screen.width/4,Screen.height/10), (currentDay+1) + "");
+			
 		}
     }
 }

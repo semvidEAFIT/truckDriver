@@ -3,22 +3,23 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+	public Texture2D[] images;
+	public GUISkin skin;
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	void OnGUI() {
+		if(skin != null){
+			GUI.skin = skin;
+		}
 		
-		if (GUI.Button(new Rect(3*Screen.width/8, 5*Screen.height/16, Screen.width/4, Screen.height/8), "Jugar")){
+		//GUI.BeginGroup(new Rect(Screen.width/10, Screen.height/3, Screen.width - Screen.width/5, Screen.height/3 - Screen.height/12));
+		skin.button.normal.background = images[0];
+		if (GUI.Button(new Rect(Screen.width/4, 2*Screen.height/3, images[0].width, images[0].height), "JUGAR")){
 			Application.LoadLevel("Game");
 		}
-		if (GUI.Button(new Rect(3*Screen.width/8, 9*Screen.height/16, Screen.width/4, Screen.height/8), "Tutorial")){
+		skin.button.normal.background = images[1];
+		if (GUI.Button(new Rect(Screen.width/2, 2*Screen.height/3,  images[1].width, images[1].height), "TUTORIAL")){
 			Application.LoadLevel("Game");
 		}
+		//GUI.EndGroup();
 	}
 }
