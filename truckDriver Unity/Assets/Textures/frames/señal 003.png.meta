@@ -1,3 +1,5 @@
+<<<<<<< HEAD:truckDriver Unity/Assets/Textures/BuildingFrames/señal 003.png.meta
+=======
 <<<<<<< HEAD:truckDriver Unity/Assets/Textures/Buildings/Edificio 03.png.meta
 fileFormatVersion: 2
 guid: 8fe53360775c18742a5188059713821d
@@ -35,8 +37,9 @@ TextureImporter:
   buildTargetSettings: []
   userData: 
 =======
+>>>>>>> 902d65cb50f8361099e16469f645a6b0fbfe20cc:truckDriver Unity/Assets/Textures/frames/señal 003.png.meta
 fileFormatVersion: 2
-guid: 5bb5ac5245bc40845b083e1efce1353e
+guid: 8fe53360775c18742a5188059713821d
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -70,4 +73,3 @@ TextureImporter:
   textureType: -1
   buildTargetSettings: []
   userData: 
->>>>>>> 22cae25b023b481fa55cd5adf808360b6dac668d:truckDriver Unity/Assets/Textures/BuildingFrames/señal 003.png.meta
