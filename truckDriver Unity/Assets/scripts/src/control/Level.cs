@@ -210,10 +210,9 @@ public class Level : MonoBehaviour
 				lostLevel=true;
 			}
 			double money = budget - Player.Instance.SpentMoney;
-			GUI.Label(new Rect(Screen.width/20,Screen.height/200,Screen.width/4,Screen.height/16), "Time Remaining: " + (int)countdownTimer);
-			GUI.Label(new Rect(Screen.width/4,Screen.height/200,Screen.width/4,Screen.height/16), "Budget Remaining: " + (int)money);
-			GUI.Label(new Rect(Screen.width/2,Screen.height/200,Screen.width/4,Screen.height/16), "Current Day: " + (currentDay+1));
+			GUI.Label(new Rect(Screen.width/20,Screen.height/200,Screen.width/4,Screen.height/16), "Time: " + (int)countdownTimer);
+			GUI.Label(new Rect(Screen.width/4,Screen.height/200,Screen.width/4,Screen.height/16), "Budget: " + (int)money);
+			GUI.Label(new Rect(Screen.width/2,Screen.height/200,Screen.width/4,Screen.height/16), "Day " + (currentDay+1));
 		}
     }
 }
-    
