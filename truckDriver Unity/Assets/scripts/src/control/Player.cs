@@ -95,7 +95,6 @@ public class Player : MonoBehaviour
 		
 		if(doneMoving && doneSelecting){
 			Level.Instance.showDayReportScreen();
-			doneMoving = false;
 		}
 	}
 	

@@ -22,4 +22,10 @@ public class MainMenu : MonoBehaviour {
 		}
 		//GUI.EndGroup();
 	}
+	
+	void Update(){
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			Application.Quit();
+		}
+	}
 }

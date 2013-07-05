@@ -61,6 +61,7 @@ public class Level : MonoBehaviour
 	
 	public Texture2D[] botones;
 	public GUISkin skin, reportSkin;
+	public GameObject cover;
 	
     void Awake() {
         if (instance == null)
@@ -148,6 +149,7 @@ public class Level : MonoBehaviour
 	public void showDayReportScreen(){
 		if(budget<0.0d){
 			lostLevel=true;
+			cover.collider.enabled = true;
 		} else {
 			if(!calculatedTimeSpent){
 				onDayReportScreen=true;
@@ -164,12 +166,13 @@ public class Level : MonoBehaviour
 		float countdownTimer = timePerDay - Time.timeSinceLevelLoad;
 		if(countdownTimer <= 0){
 			lostLevel=true;
+			cover.collider.enabled = true;
 		}
 
 		GUI.Label(new Rect(Screen.width/20, 0, Screen.width/4, Screen.height/10), botones[0]);
 		int hour = ((int)countdownTimer) / 60 ;
 		int minute = ((int)countdownTimer) % 60;
-		string hourStr = ((hour<10)? "0":"") + hour + ":"+((minute<10)? "0":"")+ minute;
+		string hourStr = ((hour<10 && hour > 0)? "0":"") + hour + ":"+((minute<10 && minute > 0)? "0":"")+ minute;
 		GUI.Label(new Rect(Screen.width/10, Screen.height/80 ,Screen.width/4,Screen.height/10),hourStr);
 		
 		GUI.Label(new Rect(Screen.width/20+Screen.width/3, 0, Screen.width/4, Screen.height/10), botones[1]);
@@ -178,27 +181,48 @@ public class Level : MonoBehaviour
 		GUI.Label(new Rect(Screen.width/20+2*Screen.width/3, 0, Screen.width/4, Screen.height/10), botones[2]);
 		GUI.Label(new Rect(Screen.width/10+2*Screen.width/3,Screen.height/80,Screen.width/4,Screen.height/10), (currentDay+1) + "");
 		
+		GUI.skin = reportSkin;
 		if(lostLevel){
-            if(GUI.Button(new Rect(Screen.width/3, Screen.height/2 - 5 - Screen.height/4, Screen.width/3, Screen.height/4), "Reintentar")){
-                Application.LoadLevel("Game");
-            }
-            if (GUI.Button(new Rect(Screen.width / 3, Screen.height / 2, Screen.width / 3, Screen.height / 4), "Salir"))
-            {
+			Rect reportSpace = new Rect(Screen.width/6 , Screen.height/ 4, 2*Screen.width/3, Screen.height/2);
+			GUI.Box(reportSpace, "");
+			GUI.BeginGroup(reportSpace);
+			GUI.Label(new Rect(0, 0, reportSpace.width, reportSpace.height/7), "Perdiste en el dia "+ (currentDay+1) +"!");
+			GUI.Label(new Rect(0, reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Tiempo Gastado: " +  (int)totalTimeSpent); 
+			Texture2D t0 = (Time.timeSinceLevelLoad > timePerDay)? botones[5]: botones[4];
+			GUI.Label(new Rect(reportSpace.width - botones[4].width, reportSpace.height/7, botones[4].width, botones[4].height), t0);
+			GUI.Label(new Rect(0, 2*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Presupuesto Inicial: " + (int)totalLevelBudget); 
+			GUI.Label(new Rect(0, 3*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Gastado: " + (int)totalBudgetSpent); 
+			Texture2D t = (totalBudgetSpent > optimalBudget)? botones[5]: botones[4];
+			GUI.Label(new Rect(reportSpace.width - botones[4].width, 3*reportSpace.height/7, botones[4].width, botones[4].height), t);
+			GUI.Label(new Rect(0, 4*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Final: " + (int)budget);
+			Texture2D t2 = (budget < 0)? botones[5]: botones[4];
+			GUI.Label(new Rect(reportSpace.width - botones[4].width, 4*reportSpace.height/7, botones[4].width, botones[4].height), t2);
+			GUI.Label(new Rect(0, 5*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Mejor Solucion: " + (int)optimalBudget);
+			if(GUI.Button(new Rect(reportSpace.width/4 - botones[3].width/2, 6*reportSpace.height/7 + reportSpace.height/14 - botones[3].height/2, botones[3].width, botones[3].height), "Salir")){
+				Application.LoadLevel("Main Menu");
 				LevelSettings.Instance.Difficulty = Difficulty.Easy;
-                Application.LoadLevel("Main Menu");
-            }
+			}
+			if(GUI.Button(new Rect(3 * reportSpace.width/4 - botones[3].width/2, 6*reportSpace.height/7 + reportSpace.height/14 - botones[3].height/2, botones[3].width, botones[3].height), "Reintentar")){
+				onLevelReportScreen=false;
+				Player.Instance.NextLevel();
+			}
+			GUI.EndGroup();
         } else {
-			GUI.skin = reportSkin;
-			
 			if(onLevelReportScreen){
 				Rect reportSpace = new Rect(Screen.width/6 , Screen.height/ 4, 2*Screen.width/3, Screen.height/2);
 				GUI.Box(reportSpace, "");
 				GUI.BeginGroup(reportSpace);
 				GUI.Label(new Rect(0, 0, reportSpace.width, reportSpace.height/7), "Nivel Completado!");
-				GUI.Label(new Rect(0, reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Tiempo Gastado: " +  (int)totalTimeSpent); 
+				GUI.Label(new Rect(0, reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Tiempo Gastado: " +  (int)Time.timeSinceLevelLoad ); 
+				Texture2D t0 = (Time.timeSinceLevelLoad > timePerDay)? botones[5]: botones[4];
+				GUI.Label(new Rect(reportSpace.width - botones[4].width, reportSpace.height/7, botones[4].width, botones[4].height), t0);
 				GUI.Label(new Rect(0, 2*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Presupuesto Inicial: " + (int)totalLevelBudget); 
-				GUI.Label(new Rect(0, 3*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Presupuesto Gastado: " + (int)totalBudgetSpent); 
-				GUI.Label(new Rect(0, 4*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Presupuesto Final: " + (int)budget);
+				GUI.Label(new Rect(0, 3*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Gastado: " + (int)totalBudgetSpent + Player.Instance.SpentMoney); 
+				Texture2D t = (totalBudgetSpent > optimalBudget)? botones[5]: botones[4];
+				GUI.Label(new Rect(reportSpace.width - botones[4].width, 3*reportSpace.height/7, botones[4].width, botones[4].height), t);
+				GUI.Label(new Rect(0, 4*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Final: " + (int)budget);
+				Texture2D t2 = (budget < 0)? botones[5]: botones[4];
+				GUI.Label(new Rect(reportSpace.width - botones[4].width, 4*reportSpace.height/7, botones[4].width, botones[4].height), t2);
 				GUI.Label(new Rect(0, 5*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Mejor Solucion: " + (int)optimalBudget);
 				if(GUI.Button(new Rect(reportSpace.width/4 - botones[3].width/2, 6*reportSpace.height/7 + reportSpace.height/14 - botones[3].height/2, botones[3].width, botones[3].height), "Menu")){
 					Application.LoadLevel("Main Menu");
@@ -235,4 +259,10 @@ public class Level : MonoBehaviour
 			}
 		}
     }
+	
+	void Update(){
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			Application.Quit();
+		}
+	}
 }
