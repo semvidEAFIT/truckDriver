@@ -95,22 +95,25 @@ public class Player : MonoBehaviour
 		
 		if(doneMoving && doneSelecting){
 			Level.Instance.showDayReportScreen();
+			doneMoving = false;
 		}
 	}
 	
     public void addNodeToSelection(int b) {
         //Debug.Log("Position" + b + " Index"+ index + " Lenght" + playerSolution.Length);
-        if(index < playerSolution.Length){
+        
+		float cost;
+		if(index < playerSolution.Length){
             if (b == 0) return;
             playerSolution[index] = b;
-            spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
+            cost = travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[index]];
             index++;
         }else{
-            spentMoney += travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
+            cost = travelCost* currentDay.TspCase.DistanceMatrix[playerSolution[index - 1], playerSolution[0]];
             doneSelecting=true;
         }
-		
-		
+		spentMoney += cost;
+		Level.Instance.Budget -= cost;
     }
 	
 	public void NextLevel(){
@@ -125,7 +128,7 @@ public class Player : MonoBehaviour
 		doneSelecting=false;
 		doneMoving=true;
 		
-		Level.Instance.nextDay(playerSolution, spentMoney);
+		Level.Instance.nextDay(playerSolution);
 		spentMoney = 0;
 	}
 	
