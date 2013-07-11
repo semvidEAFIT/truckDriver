@@ -162,6 +162,7 @@ public class Builder : MonoBehaviour
 				//b.transform.position.y + distance.y/2 + streetSize/2
 			    vectorPosition = new Vector3(b.transform.position.x,b.transform.position.y + distance.y/2,b.transform.position.z);
 				truck=Instantiate(truck,vectorPosition,truck.transform.rotation)as GameObject;
+				b.renderer.material = buildingMaterials[13];
 	//				truck.GetComponent<Vehicle>().widthBlock=distance.x;
 	//				
 	//				truck.GetComponent<Vehicle>().heigthBlock=9;

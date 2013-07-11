@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour {
 		}
 		skin.button.normal.background = images[1];
 		if (GUI.Button(new Rect(Screen.width/2, 2*Screen.height/3,  images[1].width, images[1].height), "TUTORIAL")){
-			Application.LoadLevel("Game");
+			Application.LoadLevel("Tutorial");
 		}
 		//GUI.EndGroup();
 	}
