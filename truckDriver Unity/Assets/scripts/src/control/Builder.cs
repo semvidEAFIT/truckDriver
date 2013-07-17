@@ -130,12 +130,28 @@ public class Builder : MonoBehaviour
 		
 		rate=false;
 		
+		int housePark = 0, park = 0, timeSinceGreen = 0;
+		
         for (int i = 0; i < LevelSettings.Instance.CityDimensions.x; i++)
         {
             for (int j = 0; j < LevelSettings.Instance.CityDimensions.y; j++)
             {			
 				buildings[i, j] = Instantiate(building, new Vector3(x0+i*distance.x, y0-j*distance.y, 0), Quaternion.identity) as GameObject;
-				buildings[i, j].renderer.material = buildingMaterials[Random.Range(0, buildingMaterials.Length)];
+				int bTexture = Random.Range(0, buildingMaterials.Length-1);
+				while(((bTexture == 4 || bTexture == 5)&& housePark >= 5) || (bTexture == 12 && park >= 3) || ((bTexture == 4 || bTexture == 5 || bTexture == 12)&& timeSinceGreen < 13)){
+					bTexture = Random.Range(0, buildingMaterials.Length-1);
+				}
+				if(bTexture == 4 || bTexture == 5){
+					housePark++;	
+					timeSinceGreen = 0;
+				}else if(bTexture == 12){
+					park++;
+					timeSinceGreen = 0;
+				}else{
+					timeSinceGreen++;
+				}
+				//Debug.Log(bTexture + " " + housePark + " " + park);
+				buildings[i, j].renderer.material = buildingMaterials[bTexture];
 				buildings[i,j].transform.localScale *= buildingsScale;
             }
         }
