@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using Boomlagoon.JSON;
+using System;
+using System.IO;
 
 public class LevelSettings
 {
@@ -68,11 +70,17 @@ public class LevelSettings
 
     private void setSettings()
     {
-        TextAsset settingsFile = Resources.Load("playerConfiguration") as TextAsset;
-		if(settingsFile == null){
-			settingsFile = Resources.Load("configuration") as TextAsset;
+		string settingsString;
+		try{
+			using(StreamReader sr = new StreamReader(Application.dataPath+"/playerConfiguration.txt")){
+				settingsString = sr.ReadToEnd ();
+			}
+		}catch(Exception e){
+			Debug.Log("Problem");
+			TextAsset settingsFile = Resources.Load("configuration") as TextAsset;
+			settingsString = settingsFile.text;
 		}
-		JSONObject settings = JSONObject.Parse(settingsFile.text).GetObject(difficulty.ToString());
+		JSONObject settings = JSONObject.Parse(settingsString).GetObject(difficulty.ToString());
         nodeCount = (int)settings.GetNumber(Options.nodeCount);
         time = (float)settings.GetNumber(Options.time);
         errorMargin = (float)settings.GetNumber(Options.errorMargin);
