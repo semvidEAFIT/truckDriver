@@ -20,6 +20,7 @@ public class Vehicle : MonoBehaviour
 	private Vector3 target;
 	private bool isTurning;
 	private float targetTurnDir;
+	private float snapTolerance;
 	
 	private int defaultDir;
 	
@@ -33,6 +34,7 @@ public class Vehicle : MonoBehaviour
 		defaultDir=1;
 		isTurning=false;
 		targetTurnDir=0;
+		snapTolerance=speed/5;
 	}
 
 	void Update(){
@@ -56,7 +58,7 @@ public class Vehicle : MonoBehaviour
 				target=transform.position;
 				break;
 			case 1:
-				if(Mathf.Abs(target.x-transform.position.x)>1){
+				if(Mathf.Abs(target.x-transform.position.x)>snapTolerance ){
 					//not there yet
 					if(transform.position.x<target.x){
 						//right
@@ -77,7 +79,7 @@ public class Vehicle : MonoBehaviour
 				}
 				break;
 			case 2:
-				if(Mathf.Abs(target.x-transform.position.x)>1){
+				if(Mathf.Abs(target.x-transform.position.x)>snapTolerance){
 					if(transform.position.x<target.x){
 						transform.Translate(speed*Time.deltaTime*10,0,0,Space.World);
 					} else {
@@ -101,7 +103,7 @@ public class Vehicle : MonoBehaviour
 				}
 				break;
 			case 3:
-				if(Mathf.Abs(transform.position.y-target.y)>1){
+				if(Mathf.Abs(transform.position.y-target.y)>snapTolerance){
 					if(transform.position.y<target.y){
 						transform.Translate(0,speed*Time.deltaTime*10,0,Space.World);
 					} else {
@@ -120,7 +122,7 @@ public class Vehicle : MonoBehaviour
 				}
 				break;
 			case 4:
-				if(Mathf.Abs(transform.position.x-target.x)>1){
+				if(Mathf.Abs(transform.position.x-target.x)>snapTolerance){
 					if(transform.position.x<target.x){
 						transform.Translate(speed*Time.deltaTime*10,0,0,Space.World);
 					} else {
