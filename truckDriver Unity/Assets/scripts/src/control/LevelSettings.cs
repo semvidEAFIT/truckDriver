@@ -68,7 +68,10 @@ public class LevelSettings
 
     private void setSettings()
     {
-        TextAsset settingsFile = Resources.Load("configuration") as TextAsset;
+        TextAsset settingsFile = Resources.Load("playerConfiguration") as TextAsset;
+		if(settingsFile == null){
+			settingsFile = Resources.Load("configuration") as TextAsset;
+		}
 		JSONObject settings = JSONObject.Parse(settingsFile.text).GetObject(difficulty.ToString());
         nodeCount = (int)settings.GetNumber(Options.nodeCount);
         time = (float)settings.GetNumber(Options.time);

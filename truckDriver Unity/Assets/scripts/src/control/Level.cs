@@ -155,7 +155,7 @@ public class Level : MonoBehaviour
 		} else {
 			if(!calculatedTimeSpent){
 				onDayReportScreen=true;
-				timeSpent= Time.timeSinceLevelLoad - Time.timeSinceLevelLoad;
+				timeSpent= Time.timeSinceLevelLoad - totalTimeSpent;
 				totalTimeSpent += timeSpent;
 				totalBudgetSpent+= Player.Instance.SpentMoney;
 				calculatedTimeSpent=true;
@@ -171,7 +171,7 @@ public class Level : MonoBehaviour
 			cover.collider.enabled = true;
 		}
 		if(lostLevel || onDayReportScreen || onLevelReportScreen){
-			countdownTimer = timePerDay - totalTimeSpent;
+			countdownTimer = timePerDay - Time.timeSinceLevelLoad;
 		}
 		
 		Rect info = new Rect(0,0, Screen.width, botones[0].height);
@@ -227,7 +227,7 @@ public class Level : MonoBehaviour
 				GUI.Box(reportSpace, "");
 				GUI.BeginGroup(reportSpace);
 				GUI.Label(new Rect(0, 0, reportSpace.width, reportSpace.height/7), "Nivel Completado!");
-				GUI.Label(new Rect(0, reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Tiempo Gastado: " +  (int)Time.timeSinceLevelLoad ); 
+				GUI.Label(new Rect(0, reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Tiempo Gastado: " +  (int)totalTimeSpent ); 
 				Texture2D t0 = (Time.timeSinceLevelLoad > timePerDay)? botones[5]: botones[4];
 				GUI.Label(new Rect(reportSpace.width - botones[4].width, reportSpace.height/7, botones[4].width, botones[4].height), t0);
 				GUI.Label(new Rect(0, 2*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Presupuesto Inicial: " + (int)totalLevelBudget); 

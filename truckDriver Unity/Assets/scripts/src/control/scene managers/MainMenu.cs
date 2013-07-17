@@ -21,6 +21,14 @@ public class MainMenu : MonoBehaviour {
 			Application.LoadLevel("Tutorial");
 		}
 		//GUI.EndGroup();
+		float horizontalBorder = Screen.width/16, downBorder = Screen.height / 32;
+		
+		Rect logos = new Rect(horizontalBorder, Screen.height - Screen.height/9.8f/* - downBorder*/, Screen.width - 2*horizontalBorder, Screen.height/10);
+		GUI.BeginGroup(logos);
+			GUI.Label(new Rect(0, 0, images[2].width*1.5f, images[2].height*1.5f), images[2]);
+			GUI.Label(new Rect(logos.width/2 - images[3].width/2, 0, images[3].width*1.5f, images[3].height*1.5f), images[3]);
+			GUI.Label(new Rect(logos.width - images[4].width, 0, images[4].width*1.5f, images[4].height*1.5f), images[4]);
+		GUI.EndGroup();
 	}
 	
 	void Update(){
