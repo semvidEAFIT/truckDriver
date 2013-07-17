@@ -28,9 +28,10 @@ public class DAO {
 
     public void saveConfiguration(Configuration configuration) throws IOException, NullPointerException, CancellationException {
         if (file == null) {
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int val = chooser.showSaveDialog(null);
             if (val == JFileChooser.APPROVE_OPTION) {
-                file = chooser.getSelectedFile();
+                file = new File(chooser.getSelectedFile(), "playerConfiguration.txt");
             } else {
                 throw new CancellationException();
             }
@@ -44,6 +45,7 @@ public class DAO {
         File file = null;
         Configuration configuration = null;
         try {
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int val = chooser.showOpenDialog(null);
 
             if (val == JFileChooser.APPROVE_OPTION) {
