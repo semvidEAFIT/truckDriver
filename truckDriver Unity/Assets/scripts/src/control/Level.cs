@@ -62,9 +62,11 @@ public class Level : MonoBehaviour
 	public double optimalBudget;
 	
 	public Texture2D[] botones;
-	public GUISkin skin, reportSkin;
+	public GUISkin skin, reportSkin, textSkin;
 	public GameObject cover;
-	
+	private TextAsset frases;
+	private string frase;
+		
     void Awake() {
         if (instance == null)
         {
@@ -79,6 +81,7 @@ public class Level : MonoBehaviour
 
     void Start()
     {
+		frases = Resources.Load("Textos") as TextAsset;
 		Debug.Log(LevelSettings.Instance.Difficulty);
         budget = 0.0d;
 		timeSpent = 0;
@@ -109,6 +112,7 @@ public class Level : MonoBehaviour
         loadDay();
 		Player.Instance.truck = builder.truck;
         Player.Instance.CurrentDay = CurrentDay;
+		
     }
 
     private void loadDay()
@@ -154,6 +158,7 @@ public class Level : MonoBehaviour
 			cover.collider.enabled = true;
 		} else {
 			if(!calculatedTimeSpent){
+				frase = frases.text.Split('&')[UnityEngine.Random.Range(0, 4)];
 				onDayReportScreen=true;
 				timeSpent= Time.timeSinceLevelLoad - totalTimeSpent;
 				totalTimeSpent += timeSpent;
@@ -274,6 +279,14 @@ public class Level : MonoBehaviour
 					LevelSettings.Instance.Difficulty = Difficulty.Easy;
 				}
 				
+				GUI.EndGroup();
+				GUI.skin = textSkin;
+				Rect textRect = new Rect(Screen.width/6, 2*Screen.height/3 + Screen.height/20, 2*Screen.width/3, Screen.height/6);
+				GUI.Box(textRect, "");
+				GUI.BeginGroup(textRect);
+				//Debug.Log(frase);
+				GUI.TextArea(new Rect(0, 0, textRect.width, 2*textRect.height/3), frase);	
+				GUI.Label(new Rect(textRect.width/2, 2*textRect.height/3, textRect.width/2, textRect.height/3), "Ingenieria de Produccion - EAFIT");
 				GUI.EndGroup();
 			}
 		}
