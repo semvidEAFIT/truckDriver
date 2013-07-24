@@ -156,6 +156,7 @@ public class Level : MonoBehaviour
 		if(budget<0.0d){
 			lostLevel=true;
 			cover.collider.enabled = true;
+			//totalBudgetSpent+= Player.Instance.SpentMoney;
 		} else {
 			if(!calculatedTimeSpent){
 				frase = frases.text.Split('&')[UnityEngine.Random.Range(0, 4)];
@@ -209,7 +210,7 @@ public class Level : MonoBehaviour
 			Texture2D t0 = (Time.timeSinceLevelLoad > timePerDay)? botones[5]: botones[4];
 			GUI.Label(new Rect(reportSpace.width - botones[4].width, reportSpace.height/7, botones[4].width, botones[4].height), t0);
 			GUI.Label(new Rect(0, 2*reportSpace.height/7, reportSpace.width, reportSpace.height/7), "Presupuesto Inicial: " + (int)totalLevelBudget); 
-			GUI.Label(new Rect(0, 3*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Gastado: " + (int)totalBudgetSpent); 
+			GUI.Label(new Rect(0, 3*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Gastado: " + (int)(totalBudgetSpent+Player.Instance.SpentMoney)); 
 			Texture2D t = (totalBudgetSpent > optimalBudget)? botones[5]: botones[4];
 			GUI.Label(new Rect(reportSpace.width - botones[4].width, 3*reportSpace.height/7, botones[4].width, botones[4].height), t);
 			GUI.Label(new Rect(0, 4*reportSpace.height/7, reportSpace.width - botones[4].width, reportSpace.height/7), "Presupuesto Final: " + (int)budget);
